@@ -1,0 +1,76 @@
+@import 'vars';
+.container__itemListcliente {
+    box-shadow: 0px 3px 10px -3px rgba(0,0,0,0.1);
+    border-radius: .7rem;
+    display: flex;
+    position: relative;
+    width: 300rem;
+    max-height: 8rem;
+    padding: 1.5rem 1rem .5rem 0;
+    margin-bottom: 1rem;
+    background-color: blue;
+}
+
+.content__informationCliente {
+    width: 80%;
+    color: var(--text-color-light);
+    .cita__nameCliente {
+        color: var(--text-color);
+        font-size: 1rem;
+        letter-spacing: 0.1rem;
+        font-weight: 600;
+    }
+    .content__infoCliente {
+        
+        align-items: center;
+        // seleccionar los parrafos que hay dentro del content__info
+        p {
+            font-size: 14px;
+            font-weight: 400;
+        }
+    }
+    .content__telefonoCliente {
+        p {
+            font-size: 14px;
+            letter-spacing: 0.2rem;
+            font-weight: bold;
+            color: #000;
+        }
+    }
+    .descriptionCliente {
+        font-size: 12px;
+    }
+    .descriptionCliente ul{
+        display: flex;
+        justify-content: space-between;
+    }
+
+}
+.content__imagePet {
+    padding: 0.5rem 1rem;
+    margin-right: 2rem;
+}
+.avatar {
+    width: 6rem;
+    margin-top: -1.5rem;
+}
+.icon__gender {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+.container__itemListcita {
+    margin: 0;
+}
+
+//query para cuando es mobile 
+@media screen and (max-width: 768px) {
+    .content__imagePet {
+        padding: 0.5rem 1rem;
+        margin-right: 2rem;
+    }
+    .avatar {
+        width: 5rem;
+        margin-top: -1.5rem;
+    }
+}

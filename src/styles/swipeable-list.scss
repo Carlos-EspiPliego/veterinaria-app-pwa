@@ -1,0 +1,66 @@
+
+.swipe-action__leading {
+  background-color: blue;
+  color: white;
+
+}
+.swipeable-list-item  {
+  height: 10rem;
+  width: 100%;
+}
+.swipeable-list-item__leading-actions {
+  height: 8rem !important;
+  margin-top: 1rem;
+}
+.swipeable-list-item__trailing-actions  {
+  height: 10rem !important;
+  margin-top: 1rem;
+}
+.swipe-action__trailing {
+  background-color: red;
+  margin-bottom: 2rem;
+  color: white;
+}
+.swipeable-list .swipe-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  text-align: right;
+}
+
+
+@media screen and (max-width: 768px) {
+  .swipeable-list  {
+    height: 7rem !important;
+  }
+  .swipe-action__leading {
+    background-color: blue;
+    color: white;
+  
+  }
+  .swipeable-list-item  {
+    height: 7rem;
+    width: 100%;
+  }
+  .swipeable-list-item__leading-actions {
+    height: 5.5rem !important;
+    margin-top: 1rem;
+  }
+  .swipeable-list-item__trailing-actions  {
+    height: 7.7rem !important;
+    margin-top: 0.7rem;
+  }
+  .swipe-action__trailing {
+    background-color: red;
+    margin-bottom: 2rem;
+    color: white;
+  }
+  .swipeable-list .swipe-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    text-align: right;
+  }
+}

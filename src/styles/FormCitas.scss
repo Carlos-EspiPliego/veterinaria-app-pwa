@@ -1,0 +1,32 @@
+.container__inputs {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+// MEDIA QUERY PARA CUANDO LA PANTALLA ES DESKTOP
+@media screen and (min-width: 768px) {
+    .button__citas {
+        padding: 0.5rem 0;
+        border-radius: 4rem;
+        border: none;
+        font-size: var(--body-font-size-desk);
+        margin-bottom: 1rem;
+        background-color: var(--first-color);
+        color: white;
+        font-weight: bold;
+        letter-spacing: 3px;
+        font-family: var(--body-font);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        &:hover {
+            background-color: var(--first-color-hover);
+        }
+    }
+}
+
+// MEDIA QUERY PARA CUANDO LA PANTALLA ES MOBILE
+@media screen and (max-width: 768px) {
+
+}

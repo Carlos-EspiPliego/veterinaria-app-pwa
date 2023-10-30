@@ -1,0 +1,143 @@
+
+.content__imagePet {
+    width: 20%;
+    padding-right: 1rem;
+}
+
+.icon__gender {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+// MEDIA QUERY PARA CUANDO LA PANTALLA ES DESKTOP
+@media screen and (min-width: 768px) {
+    .container__itemListcita {
+        box-shadow: 0px 3px 10px -3px rgba(0,0,0,0.1);
+        border-radius: .7rem;
+        display: flex;
+        position: relative;
+        width: 100%;
+        height: 8rem;
+        padding: 0.5rem 1rem .5rem 0;
+        margin-left: 1.5rem;
+    }
+    .content__information {
+        width: 80%;
+        padding-left: 1rem;
+        color: var(--text-color-light);
+        .cita__namePet {
+            color: var(--text-color);
+            font-size: 1rem;
+            letter-spacing: 0.1rem;
+            font-weight: 600;
+        }
+        .content__info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            // seleccionar los parrafos que hay dentro del content__info
+            p {
+                font-size: 14px;
+                letter-spacing: 0.2rem;
+            }
+        }
+        .content__datetime {
+            margin-top: 0.5rem;
+            p {
+                font-size: 14px;
+                letter-spacing: 0.2rem;
+                font-weight: bold;
+            }
+        }
+        .description {
+            font-size: 12px;
+        }
+    
+    }
+    .back__pug {
+        height: 8rem;
+        margin-left: -1.5rem;
+    }
+    .pug {
+        width: 9rem;
+        position: absolute;
+        top: -1.5rem;
+        left: -1.5rem;
+        
+    }
+    .cat {
+        width: 7.5rem;
+        position: absolute;
+        top: -3rem;
+        left: -1rem;
+        
+    }
+}
+
+
+// MEDIA QUERY PARA CUANDO LA PANTALLA ES MOBILE
+@media screen and (max-width: 768px) {
+    .container__itemListcita {
+        box-shadow: 0px 3px 10px -3px rgba(0,0,0,0.1);
+        border-radius: .7rem;
+        display: flex;
+        position: relative;
+        width: 100%;
+        height: 6rem;
+        padding: 0.5rem 1rem .5rem 0;
+        margin-left: 1.5rem;
+    }
+    .content__information {
+        width: 80%;
+        padding-left: 1rem;
+        color: var(--text-color-light);
+        .cita__namePet {
+            color: var(--text-color);
+            font-size: 14px;
+            letter-spacing: 0.1rem;
+            font-weight: 600;
+        }
+        .content__info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            // seleccionar los parrafos que hay dentro del content__info
+            p {
+                font-size: 10px;
+                letter-spacing: 0.2rem;
+            }
+        }
+        .content__datetime {
+            margin-top: 0.5rem;
+            p {
+                font-size: 10px;
+                letter-spacing: 0.2rem;
+                font-weight: bold;
+            }
+        }
+        .description {
+            font-size: 8px;
+        }
+    
+    }
+    .back__pug {
+        height: 5.7rem;
+        width: 6rem;
+        margin-left: -1.5rem;
+        position: absolute;
+    }
+    .pug {
+        width: 6rem;
+        position: absolute;
+        top: -0.5rem;
+        left: -1.5rem;
+        
+    }
+    .cat {
+        width: 5rem;
+        position: absolute;
+        top: -1.5rem;
+        left: -1rem;
+        
+    }
+}

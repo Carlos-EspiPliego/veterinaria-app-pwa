@@ -1,0 +1,79 @@
+.container__clientes {
+    max-width: 1200px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+    margin-top: 2rem;
+    padding: 0 1.5rem;
+}
+.content__titleClientes {
+    margin-bottom: 1rem;
+}
+.botonAgregarClientes{
+    height: 48px;
+    border-radius: 62px;
+    cursor: pointer;
+    font-size: var(--body-font-size-desk);
+    font-weight: var(--font-bold);
+    border: none;
+    color: var(--white);
+    background-color: #83BE42;
+    display: none;
+}
+.btn__addCliente {
+    cursor: pointer;
+}
+// MEDIA QUERY PARA CUANDO LA PANTALLA ES DESKTOP
+@media screen and (min-width: 768px) {
+    .body__content {
+        display: flex;
+        width: 100%;
+        height: 100%;
+    }
+    .content__formClientes {
+        width: 50%;
+        box-shadow: 0px 3px 10px -3px rgba(0,0,0,0.1);
+        border-radius: 1rem;
+        padding: 1.5rem; // 1.5rem = 24px
+        margin-right: 1rem;
+
+    }
+    .content__listClientes {
+        width: 50%;
+        padding: 1.5rem 0;
+        border-radius: 1rem;
+        margin-left: 1rem;
+        overflow-y: scroll;
+        &::-webkit-scrollbar {
+            width: 0.5rem;
+        }
+    }
+    
+}
+
+// MEDIA QUERY PARA CUANDO LA PANTALLA ES MOBILE
+@media screen and (max-width: 768px) {
+    .body__content{
+        width: 100%;
+    }
+    .content__formClientes{
+        display: none;
+    }
+    .content__listClientes{
+        width: 100%;
+        border-radius: 1rem;
+        overflow-y: scroll;
+        &::-webkit-scrollbar {
+            width: 0.5rem;
+        }
+    }
+    .botonAgregarClientes{
+        display: block;
+        width: 420px;
+    }
+    .content__titleClientes h3{
+        display: none;
+    }
+}

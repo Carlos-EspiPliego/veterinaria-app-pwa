@@ -1,0 +1,49 @@
+.container__notfound {
+    height: 100vh;
+    margin: auto;
+    background-color: #A8D27B;
+    color: white;
+    padding: 1.5rem;
+}
+
+.content__notfound {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+}
+.container__title {
+    margin-bottom: 5rem;
+    text-align: center;
+    h1 {
+        font-size: 3rem;
+        font-weight: 700;
+    }
+    p {
+        font-size: 1rem;
+        font-weight: 400;
+    }
+}
+.container__btn {
+    width: 100%;
+    margin-top: 6rem;
+}
+.btn__notfound {
+    display: flex;
+    width: 100%;
+    padding: 0.5rem 0;
+    justify-content: center;
+}
+.btn__notfound:hover {
+    background-color: #A8D27B;
+    color: white;
+}
+
+// query para cuando la pantalla es desktop
+@media screen and (min-width: 768px) {
+    .content__notfound {
+        margin: auto;
+        max-width: 30rem;
+    }
+}

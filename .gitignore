@@ -1,0 +1,12 @@
+# Ignore archivos específicos
+package-lock.json
+
+# Ignore la carpeta node_modules y todo su contenido
+node_modules/
+
+# Ignore archivos con extensiones específicas
+
+# Ignore archivos en carpetas específicas
+
+# Ignore archivos generados por el sistema operativo
+

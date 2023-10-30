@@ -1,0 +1,40 @@
+/*=============== GOOGLE FONTS ===============*/
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+:root {
+    /*========== Colors ==========*/
+    --first-hue: 89;
+    --first-sat: 49%;
+    --first-lig: 50%;
+    --first-color: hsl(var(--first-hue), var(--first-sat), var(--first-lig)); /* NARANJA CLARO */
+    --first-color-hover: hsl(var(--first-hue), var(--first-sat), 43%); /* -7% */
+    --text-color: hsl(var(--first-hue), var(--first-sat), 15%);
+    --text-color-light: hsl(var(--first-hue), 0%, 70%);
+    --container-color: hsla(0, 0%, 100%, .05);
+    --black: #000;
+    --white: #fff;
+
+    /*========== Font and typography FOR DESKTOP ==========*/
+    /*.5rem = 8px | 1rem = 16px ...*/
+    --body-font: 'Poppins', sans-serif;
+    --header-font: 'Montserrat', sans-serif;
+    --h1-font-size-desk: 3.75rem; /* 60px */
+    --h2-font-size-desk: 2rem; /* 32px */
+    --h3-font-size-desk: 1.5rem; /* 24px */
+    --body-font-size-desk: 1rem; /* 16px */
+    --small-font-size-desk: .875rem; /* 14px */
+    
+    /*========== Font and typography FOR MOBILE ==========*/
+    /*.5rem = 8px | 1rem = 16px ...*/
+    --h1-font-size-mobile: 2.50rem; /* 40px */
+    --h2-font-size-mobile: 1.5rem; /* 24px */
+    --h3-font-size-mobile: 1.375rem; /* 22px */
+    --body-font-size-mobile: .875rem; /* 14px */
+    --small-font-size-mobile: .75rem; /* 12px */
+
+    /*========== Font weight ==========*/
+    --font-normal: 400;
+    --font-medium: 500;
+    --font-bold: 700;
+}
