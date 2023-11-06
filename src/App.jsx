@@ -6,6 +6,8 @@ import Inicio from './pages/Inicio'
 import Register from './pages/auth/Register'
 import HomeAdmin from './pages/Admin/Home'
 import HomeUser from './pages/User/Home'
+import Clientes from '@pages/Admin/Clientes'
+import Mascotas from '@pages/Admin/Mascotas'
 
 function App() {
 
@@ -16,6 +18,8 @@ function App() {
         <Route path="/Register" element={<Register/>} />
         <Route path="/HomeAdmin" element={<HomeAdmin/>} />
         <Route path="/HomeUser" element={<HomeUser/>} />
+        <Route path="/Clientes" element={<Clientes />} />
+        <Route path="/Mascotas" element={<Mascotas />} />
       </Routes>
     </Browser>
   )

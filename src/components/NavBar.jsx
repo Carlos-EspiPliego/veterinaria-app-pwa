@@ -1,5 +1,5 @@
 import '@styles/NavBar.scss'
-import Logo from '../assets/images/ImagotipoTransparente.svg'
+import Logo from '@assets/images/ImagotipoTransparente.svg'
 
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from '../features/theme/themeSlice';
@@ -17,7 +17,7 @@ const NavBar = () => {
   };
 
   return (
-    <Navbar shouldHideOnScroll>
+    <Navbar shouldHideOnScroll maxWidth='xl'>
       <NavbarBrand>
         <img src={Logo} alt="PetCare" className="w-12 h-12 me-3" />
       </NavbarBrand>

@@ -1,14 +1,13 @@
-import { useState, useEffect, useRef } from "react";
-import axios from "axios";
+import React, { useState, useEffect, useRef } from "react";
 import NavBar from "@components/NavBar";
 import ButtonNavBar from "@components/ButtonNavBar";
-import FormCitas from "@containers/FormCitas";
-import ListadoCitas from "@containers/ListadoCitas";
-import ModalFormCitas from "@containers/ModalFormCitas";
-import useCitas from "@hooks/useCitas";
-import "@styles/Home.scss";
+import FormPets from "@containers/FormPets";
+import ListadoPets from "@containers/ListadoPets";
+import ModalFormPets from "@containers/ModalFormPets";
+import axios from "axios";
+import "@styles/Mascotas.scss";
 
-const Home = () => {
+const Mascotas = () => {
   // ----------------- VARIABLES PARA EL MODAL -----------------
   const [show, setShow] = useState(false);
   const showModal = () => {
@@ -39,45 +38,53 @@ const Home = () => {
   }, []);
 
   // ----------------- VARIABLES PARA EL FORMULARIO -----------------
-  const [cita, setCita] = useState({
-    idCita: "",
-    fecha: "",
-    descripcion: "",
+  const [pet, setPet] = useState({
+    idMascota: "",
+    nombre: "",
+    fechaNacimiento: "",
+    peso: "",
+    notas: "",
     idCliente: "",
     nombreCliente: "",
-    apellidosCliente: "",
-    idMascota: "",
-    nombreMascota: "",
+    apellidoCliente: "",
+    sexo: "",
+    especie: "",
+    raza: "",
+    edad: "",
   });
 
-  const formCita = useRef(null);
+  const formMascota = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("hanldeSubmit");
-    const formData = new FormData(formCita.current);
+    const formData = new FormData(formMascota.current);
 
-    if (cita.idCita === "" || cita.idCita === undefined) {
+    if (pet.idMascota === "" || pet.idMascota === undefined) {
       console.log("Es una nueva cita -> ");
-      console.log(cita);
+      console.log(pet);
 
-      const urlAdd = "http://srchicharron.com:8080/dancing-queen/citas/addcita";
-      const newCita = {
-        fecha: formData.get("fecha"),
-        descripcion: formData.get("descripcion"),
+      const urlAdd =
+        "http://srchicharron.com:8080/dancing-queen/mascotas/addmascota";
+      //const urlAdd = "http://localhost:2813/mascotas/addmascota";
+      const newPet = {
+        nombre: formData.get("nombreMascota"),
+        fechaNacimiento: formData.get("fechaNacimiento"),
+        peso: formData.get("peso"),
+        notas: formData.get("notas"),
+        sexo: formData.get("sexo"),
+        especie: formData.get("especie"),
+        raza: formData.get("raza"),
         cliente: {
           id: formData.get("idCliente"),
         },
-        mascota: {
-          id: formData.get("idMascota"),
-        },
       };
-      console.log("Datos de la newCita");
-      console.log(newCita);
+      console.log("Datos de la newPet");
+      console.log(newPet);
       axios({
         method: "POST",
         url: urlAdd,
-        data: JSON.stringify(newCita),
+        data: JSON.stringify(newPet),
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Headers":
@@ -89,33 +96,37 @@ const Home = () => {
         .then((response) => {
           console.log(response);
           formatearFormulario();
-          getAllCitas();
+          fetchMascotas();
         })
         .catch((error) => {
           console.error(error);
         });
     } else {
-      console.log("Se tiene que editar esta cita -> " + cita.idCita);
-      console.log(cita);
+      console.log("Se tiene que editar esta cita -> " + pet.idMascota);
+      console.log(pet);
 
-      const urlEdit = "http://srchicharron.com:8080/dancing-queen/citas/addcita";
-      const newCita = {
-        id: cita.idCita,
-        fecha: formData.get("fecha"),
-        descripcion: formData.get("descripcion"),
+      const urlEdit =
+        "http://srchicharron.com:8080/dancing-queen/mascotas/updatemascota";
+      //const urlEdit = "http://localhost:2813/mascotas/updatemascota";
+      const newPet = {
+        id: pet.idMascota,
+        nombre: formData.get("nombreMascota"),
+        fechaNacimiento: formData.get("fechaNacimiento"),
+        peso: formData.get("peso"),
+        notas: formData.get("notas"),
+        sexo: formData.get("sexo"),
+        especie: formData.get("especie"),
+        raza: formData.get("raza"),
         cliente: {
           id: formData.get("idCliente"),
         },
-        mascota: {
-          id: formData.get("idMascota"),
-        },
       };
       console.log("Datos de la newCita");
-      console.log(newCita);
+      console.log(newPet);
       axios({
         method: "POST",
         url: urlEdit,
-        data: JSON.stringify(newCita),
+        data: JSON.stringify(newPet),
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Headers":
@@ -126,93 +137,106 @@ const Home = () => {
       })
         .then((response) => {
           console.log(response);
+          fetchMascotas();
           formatearFormulario();
-          getAllCitas();
         })
         .catch((error) => {
+          formatearFormulario();
           console.error(error);
         });
     }
   };
 
+  const onDelete = () => {
+    console.log("onDeleteOrigin");
+    formatearFormulario();
+    fetchMascotas();
+  };
+
   const formatearFormulario = () => {
     // LIMPIAR EL FORMULARIO
-    setCita({
-      idCita: "",
-      fecha: "",
-      descripcion: "",
+    setPet({
+      idMascota: "",
+      nombre: "",
+      fechaNacimiento: "",
+      peso: "",
+      notas: "",
       idCliente: "",
       nombreCliente: "",
       apellidosCliente: "",
-      idMascota: "",
-      nombreMascota: "",
+      sexo: "",
+      especie: "",
+      raza: "",
+      edad: "",
     });
   };
 
   const handleChange = (event) => {
-    setCita({ ...cita, [event.target.name]: event.target.value });
-    console.log(cita);
+    setPet({ ...pet, [event.target.name]: event.target.value });
+    console.log(pet);
   };
 
-  // ----------------- LISTAR LAS CITAS -----------------
-  const [citas, setCitas] = useState([]);
-  const url = "http://srchicharron.com:8080/dancing-queen/citas/getallcitas";
-  const getAllCitas = async () => {
-    const req = await axios.get(url);
-    setCitas(req.data);
+  // ----------------- LISTAR LAS MASCOTAS -----------------
+  const urlGetPets =
+    "http://srchicharron.com:8080/dancing-queen/mascotas/getmascotasbyclienteid?idCliente=";
+  const [idCliente, setIdCliente] = useState(0);
+  const [pets, setPets] = useState([]);
+  const fetchMascotas = async () => {
+    const req = await axios.get(urlGetPets + idCliente);
+    setPets(req.data);
   };
   useEffect(() => {
-    getAllCitas();
-  }, []);
+    fetchMascotas();
+  }, [idCliente]);
   return (
     <div>
       <NavBar />
-      {/* // Hacer una validación para cuando la pantalla sea menor a 768px mostrar el modal */}
       {windowSize < 768 && (
-        <ModalFormCitas
+        <ModalFormPets
           className="modalFormCitas"
-          cita={cita}
-          setCita={setCita}
+          pet={pet}
+          setPet={setPet}
           show={show}
           handleClose={handleClose}
           handleSubmit={handleSubmit}
           handleChange={handleChange}
           formatearFormulario={formatearFormulario}
-          formCita={formCita}
+          formMascota={formMascota}
+          idCliente={idCliente}
+          setIdCliente={setIdCliente}
         />
       )}
-      <div className="container__citas">
-        <div className="content__titleCitas">
-          <h3 className="title__citas">ADMINISTRADOR DE CITAS</h3>
+      <div className="container__pets main__container">
+        <div className="content__titlePets">
+          <h3 className="title__pets">ADMINISTRADOR DE MASCOTAS</h3>
         </div>
 
-        <div className="body__content-home">
-          <button className="button__citas button" onClick={handleShow}>
-            AGREGAR CITA
+        <div className="body__content-pets">
+          <button className="button__pets button" onClick={handleShow}>
+            AGREGAR MASCOTA
           </button>
-          <div className="content__formCitas">
-            <FormCitas
-              cita={cita}
-              setCita={setCita}
+          <div className="content__formPets">
+            <FormPets
+              pet={pet}
+              setPet={setPet}
               show={show}
               handleClose={handleClose}
               handleSubmit={handleSubmit}
               handleChange={handleChange}
               formatearFormulario={formatearFormulario}
-              formCita={formCita}
-              // citasDataInit={citaEdit}
+              formMascota={formMascota}
+              idCliente={idCliente}
+              setIdCliente={setIdCliente}
             />
           </div>
-          <div className="content__listCitas">
-            <ListadoCitas
-              citas={citas}
-              setCitas={setCitas}
-              citaEdit={cita}
-              setCitaEdit={setCita}
+          <div className="content__listPets">
+            <ListadoPets
+              pets={pets}
+              mascotaEdit={pet}
+              setMascotaEdit={setPet}
               showModal={showModal}
               handleClose={handleClose}
-              // citasDataInit={citaEdit}
-              // setCitaEdit={setCitaEdit}
+              onDelete={onDelete}
             />
           </div>
         </div>
@@ -222,4 +246,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Mascotas;

@@ -1,27 +1,27 @@
-import React from 'react'
-import IconHome from '@assets/images/ImagotipoBlanco.svg'
 import IconPet from '@assets/icons/dog.svg'
-import IconUser from '@assets/icons/user-regular.svg'
 import '@styles/ButtonNavBar.scss'
+
+import { IconHome, IconUser } from '@tabler/icons-react';
+import { Link } from 'react-router-dom';
 
 const ButtonNavBar = () => {
   return (
     <div className='container__buttonNavBar'>
       <div className='content__buttonNavBar'>
         <div className='container__iconUser containers__icons'>
-          <a href='/Clientes'>
-            <img className='iconUser iconsbnb' src={IconUser}/>
-          </a>
+          <Link to={'/Clientes'}>
+            <IconUser className='iconUser iconsbnb'/>
+          </Link>
         </div>
         <div className='container__iconHome containers__icons'>
           <a href='/Home'>
-            <img className='iconHome iconsbnb' src={IconHome}/>
+            <IconHome className='iconHome iconsbnb'/>
           </a>
         </div>
         <div className='container__iconPet containers__icons'>
-          <a href='/Mascotas'>
+          <Link to={'/Mascotas'}>
             <img className='iconPet iconsbnb' src={IconPet}/>
-          </a>
+          </Link>
         </div>
       </div>
     </div>

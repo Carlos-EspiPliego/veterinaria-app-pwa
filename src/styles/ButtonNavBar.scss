@@ -1,17 +1,19 @@
 .iconsbnb {
-    height: 24px;
+    height: 28px;
+    width: 28px;
     
 }
 .iconPet {
     height: 32px;
+    width: 38px;
 }
 .containers__icons {
     cursor: pointer;
 }
 .container__iconHome {
     background-color: var(--first-color);
-    width: 3rem;
-    height: 3rem;
+    width: 3.5rem;
+    height: 3.5rem;
     border-radius: 100%;
     display: flex;
     justify-content: center;
