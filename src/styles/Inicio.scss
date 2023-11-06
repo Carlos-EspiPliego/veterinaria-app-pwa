@@ -1,53 +1,7 @@
 .background {
-    background-image: url('../assets/images/dogInicio.jpg');
-    height: 100vh;
+    background-image: url('../assets/images/backgroundInicio.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-}
-.containerInicio {
-    margin: auto;
-    padding: 1rem;
-    height: 95vh;
-}
-.container__logoInicio {
-    height: 50%;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    .logoInicio {
-        width: 11rem;
-    }
-    .titleInicio {
-        text-align: center;
-        font-size: 2rem;
-    }
-}
-.container__btnInicio {
-    position: relative;
-    height: 50%;
-    .btnInicio {
-        position: absolute;
-        bottom: 0;
-        background-color: var(--first-color);
-        width: 100%;
-        border-radius: 10rem;
-        color: white;
-        display: block;
-        padding: .75rem 0;
-        text-align: center;
-        cursor: pointer;
 
-        &:hover {
-            background-color: var(--first-color-hover);
-        }
-    }
-}
-
-// query para cuando la pantalla es desktop
-@media screen and (min-width: 768px) {
-    .containerInicio {
-        max-width: 40rem;
-    }
-    
 }

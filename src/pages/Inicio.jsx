@@ -1,19 +1,16 @@
-import React from 'react'
-import '@styles/Inicio.scss'
-import Logo from '@assets/images/LogoTrans.svg'
+import '../styles/Inicio.scss'
+import NavBar from '../components/NavBar';
+import LoginForm from '../containers/auth/LoginForm';
 
 const Inicio = () => {
+
   return (
     <div className='background'>
-      <div className='containerInicio'>
-        <div className='container__logoInicio'>
-          <img className='logoInicio' src={Logo} alt='Logo' />
-          <p className='titleInicio'>La mejor veterinaria</p>
-        </div>
-        <div className='container__btnInicio'>
-            <a href='Home' className='btnInicio'>INICIAR SESIÓN</a>
-        </div>
+      <NavBar />
+      <div className='flex justify-center items-center h-screen px-4'>
+        <LoginForm />
       </div>
+
     </div>
   )
 }

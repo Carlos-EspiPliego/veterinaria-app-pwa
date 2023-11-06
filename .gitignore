@@ -1,12 +1,24 @@
-# Ignore archivos específicos
-package-lock.json
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Ignore la carpeta node_modules y todo su contenido
-node_modules/
+node_modules
+dist
+dist-ssr
+*.local
 
-# Ignore archivos con extensiones específicas
-
-# Ignore archivos en carpetas específicas
-
-# Ignore archivos generados por el sistema operativo
-
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

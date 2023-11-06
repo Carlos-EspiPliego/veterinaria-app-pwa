@@ -1,47 +1,41 @@
 {
-  "name": "citasveterinaria",
-  "version": "1.0.0",
-  "description": "PETCARE - Veterinaria",
-  "main": "index.js",
+  "name": "petcare",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack server --open",
-    "build": "webpack --mode production",
-    "dev": "webpack --mode development"
-  },
-  "keywords": [
-    "js",
-    "jsx",
-    "react"
-  ],
-  "author": "\"Carlos Espinoza, Moises Navarro, Luis Trejo, Karla Yiven, Metzli Luna, Estefanía Gonzales\" <2022378002@uteq.edu.mx>",
-  "license": "MIT",
-  "devDependencies": {
-    "@babel/core": "^7.20.12",
-    "@babel/preset-env": "^7.20.2",
-    "@babel/preset-react": "^7.18.6",
-    "babel-loader": "^9.1.2",
-    "css-loader": "^6.7.3",
-    "html-loader": "^4.2.0",
-    "html-webpack-plugin": "^5.5.0",
-    "mini-css-extract-plugin": "^2.7.2",
-    "node-sass": "^8.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.8.0",
-    "sass": "^1.57.1",
-    "sass-loader": "^13.2.1",
-    "style-loader": "^3.3.2",
-    "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^4.11.1"
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@babel/plugin-transform-runtime": "^7.21.0",
-    "axios": "^1.3.4",
-    "bootstrap": "^5.2.3",
-    "prop-types": "^15.8.1",
-    "react-bootstrap": "^2.7.2",
-    "react-swipeable-list": "^1.5.1"
+    "@nextui-org/react": "^2.1.13",
+    "@reduxjs/toolkit": "^1.9.7",
+    "@tabler/icons-react": "^2.40.0",
+    "axios": "^1.6.0",
+    "framer-motion": "^10.16.4",
+    "normalize.css": "^8.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.1.3",
+    "react-router-dom": "^6.18.0",
+    "react-swipeable-list": "^1.9.1",
+    "redux": "^4.2.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.3",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "postcss": "^8.4.31",
+    "sass": "^1.69.5",
+    "sass-loader": "^13.3.2",
+    "tailwindcss": "^3.3.5",
+    "vite": "^4.4.5"
   }
 }
