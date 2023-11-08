@@ -18,7 +18,7 @@ const LoginForm = () => {
                     <p className='text-gray-600'>Inicia sesión y descubre un mundo de gestión perfecta</p>
                 </div>
             </CardHeader>
-            <CardBody>
+            <CardBody className='p-3'>
                 <Input
                     isClearable
                     type="email"
@@ -27,7 +27,7 @@ const LoginForm = () => {
                     placeholder="Enter your email"
                     defaultValue=""
                     onClear={() => console.log("input cleared")}
-                    className="mb-3"
+                    className="mb-3 w-[100%]"
                 />
                 <Input
                     label="Password"
@@ -43,6 +43,7 @@ const LoginForm = () => {
                         </button>
                     }
                     type={isVisible ? "text" : "password"}
+                    className='w-[100%]'
                 />
             </CardBody>
             <CardFooter className='flex flex-col'>
@@ -52,7 +53,7 @@ const LoginForm = () => {
                     </Button>
                 </Link>
                 <Link to="HomeUser" className='w-full'>
-                    <Button color="primary" radius='full' auto endContent={<IconLogin2 />} className='w-[100%] mb-3'>
+                    <Button color="primary" radius='full' endContent={<IconLogin2 />} className='w-[100%] mb-3'>
                         Iniciar Sesión (User)
                     </Button>
                 </Link>

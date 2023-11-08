@@ -23,23 +23,6 @@ const NavBar = () => {
       <NavbarBrand>
         <img src={Logo} alt="PetCare" className="w-12 h-12 me-3" />
       </NavbarBrand>
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <Link color="foreground" href="#" isDisabled="true">
-            Acerca de nosotros
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#" isDisabled="true">
-            Casos de exito
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#" isDisabled="true">
-            Contacto
-          </Link>
-        </NavbarItem>
-      </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem className="hidden lg:flex">
           <button className="focus:outline-none" type="button" onClick={onToggleTheme}>
@@ -51,9 +34,12 @@ const NavBar = () => {
           </button>
         </NavbarItem>
         <NavbarItem className="hidden lg:flex">
-          <Link to={"/"}>
-            <Button color="danger" variant="flat">
-              Cerrar Sesión
+          <Link href="#">Iniciar Sesión</Link>
+        </NavbarItem>
+        <NavbarItem>
+        <Link to={"/Register"}>
+            <Button color="primary" variant="flat">
+              Registrarme
             </Button>
           </Link>
         </NavbarItem>

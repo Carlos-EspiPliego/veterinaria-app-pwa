@@ -11,14 +11,14 @@ const RegisterForm = () => {
     const toggleVisibility = () => setIsVisible(!isVisible);
 
     return (
-        <Card isBlurred shadow="md" className="border-none bg-background/60 dark:bg-default-100/50 max-w-[410px] w-[100%] mb-20">
+        <Card isBlurred shadow="md" className="border-none bg-background/60 dark:bg-default-100/50 max-w-[410px] w-[100%]">
             <CardHeader className="flex gap-3">
                 <div className="flex flex-col w-[100%]">
                     <h1 className='text-2xl font-bold'>Bienvenido a PetCare</h1>
                     <p className='text-gray-600'>Inicia sesión y descubre un mundo de gestión perfecta</p>
                 </div>
             </CardHeader>
-            <CardBody>
+            <CardBody className='p-3'>
                 <Input
                     type="text"
                     label="Name"

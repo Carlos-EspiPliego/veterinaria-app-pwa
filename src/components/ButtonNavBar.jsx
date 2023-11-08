@@ -10,17 +10,17 @@ const ButtonNavBar = () => {
       <div className='content__buttonNavBar'>
         <div className='container__iconUser containers__icons'>
           <Link to={'/Clientes'}>
-            <IconUser className='iconUser iconsbnb'/>
+            <IconUser className='iconUser iconsbnb' />
           </Link>
         </div>
         <div className='container__iconHome containers__icons'>
-          <a href='/Home'>
-            <IconHome className='iconHome iconsbnb'/>
-          </a>
+          <Link to={'/HomeAdmin'}>
+            <IconHome className='iconHome iconsbnb' color='white' />
+          </Link>
         </div>
         <div className='container__iconPet containers__icons'>
           <Link to={'/Mascotas'}>
-            <img className='iconPet iconsbnb' src={IconPet}/>
+            <img className='iconPet iconsbnb' src={IconPet} />
           </Link>
         </div>
       </div>

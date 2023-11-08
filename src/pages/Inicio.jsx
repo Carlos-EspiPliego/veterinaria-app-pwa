@@ -1,5 +1,5 @@
 import '../styles/Inicio.scss'
-import NavBar from '../components/NavBar';
+import NavBar from '../components/NavBarIntro';
 import LoginForm from '../containers/auth/LoginForm';
 
 const Inicio = () => {
