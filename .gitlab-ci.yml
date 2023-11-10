@@ -1,4 +1,5 @@
 image: node:18.18.0
+
 stages:
   - install
   - test
