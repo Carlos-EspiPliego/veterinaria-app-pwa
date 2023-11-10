@@ -1,8 +1,20 @@
-image: node:18.18.0
+image: node:16.5.0
 
 stages:
   - install
   - test
+  - deploy
+
+variables:
+  CI_DEFAULT_BRANCH: main  # Ajusta esto según la rama predeterminada de tu repositorio
+
+cache:
+  key:
+    files:
+      - package-lock.json
+    prefix: npm
+  paths:
+    - node_modules/
 
 install-dependencies:
   stage: install
@@ -18,10 +30,10 @@ install-dependencies:
 
 test-apps:
   stage: test
-  variables:
-    CHROME_BIN: google-chrome
   dependencies:
     - install-dependencies
+  variables:
+    CHROME_BIN: google-chrome
   before_script:
     - apt-get update && apt-get install -y apt-transport-https
     - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
@@ -29,3 +41,17 @@ test-apps:
     - apt-get update && apt-get install -y google-chrome-stable
   script:
     - npm run test:ci
+
+deploy:
+  stage: deploy
+  script:
+    - npm install
+    - npm run build
+    - cp -a dist/. public/
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+
