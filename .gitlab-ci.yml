@@ -19,8 +19,8 @@ cache:
 install-dependencies:
   stage: install
   script:
-    - npm install -g vite  # Instala Vite de forma global
-    - npm install         # Instala otras dependencias
+    - npm install -g vite  
+    - npm install         
   artifacts:
     expire_in: 1hr
     paths:
@@ -40,8 +40,9 @@ test-apps:
     - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
     - sh -c 'echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
     - apt-get update && apt-get install -y google-chrome-stable
+    - npm install  
   script:
-    - vite test
+    - npm run test:ci 
 
 deploy:
   stage: deploy
