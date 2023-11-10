@@ -1,4 +1,4 @@
-image: node:16.5.0
+image: node:18.18.0
 
 stages:
   - install
@@ -6,7 +6,7 @@ stages:
   - deploy
 
 variables:
-  CI_DEFAULT_BRANCH: main  # Ajusta esto según la rama predeterminada de tu repositorio
+  CI_DEFAULT_BRANCH: main 
 
 cache:
   key:
