@@ -6,7 +6,7 @@ stages:
   - deploy
 
 variables:
-  CI_DEFAULT_BRANCH: main 
+  CI_DEFAULT_BRANCH: main
 
 cache:
   key:
@@ -19,7 +19,8 @@ cache:
 install-dependencies:
   stage: install
   script:
-    - npm install
+    - npm install -g vite 
+    - npm install         
   artifacts:
     expire_in: 1hr
     paths:
@@ -42,7 +43,6 @@ test-apps:
   script:
     - vite test
 
-
 deploy:
   stage: deploy
   script:
@@ -54,5 +54,4 @@ deploy:
       - public
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
-
 
