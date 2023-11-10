@@ -19,8 +19,8 @@ cache:
 install-dependencies:
   stage: install
   script:
-    - npm install -g vite 
-    - npm install         
+    - npm install -g vite  # Instala Vite de forma global
+    - npm install         # Instala otras dependencias
   artifacts:
     expire_in: 1hr
     paths:
@@ -54,4 +54,3 @@ deploy:
       - public
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
-
