@@ -47,7 +47,7 @@ const LoginForm = () => {
                 />
             </CardBody>
             <CardFooter className='flex flex-col'>
-                <Link to="HomeAdmin" className='w-full'>
+                <Link to="Citas" className='w-full'>
                     <Button color="primary" radius='full' auto endContent={<IconLogin2 />} className='w-[100%] mb-3'>
                         Iniciar Sesión (Admin)
                     </Button>
