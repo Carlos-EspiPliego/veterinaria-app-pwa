@@ -6,37 +6,77 @@ import { toggleTheme } from '../features/theme/themeSlice';
 
 import { IconMoonFilled, IconSunFilled } from '@tabler/icons-react';
 
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Button } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Button, NavbarMenuToggle, NavbarMenu, NavbarMenuItem } from "@nextui-org/react";
 
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 const NavBar = () => {
   const theme = useSelector((state) => state.theme.theme);
   const dispatch = useDispatch();
+  const [activeNavItem, setActiveNavItem] = useState('Citas');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const menuItems = [
+    "Citas",
+    "Clientes",
+    "Mascotas",
+    "Historial",
+  ]
   const onToggleTheme = () => {
     dispatch(toggleTheme()); // Llama a la acción para cambiar el tema
   };
 
+  const handleNavItemClick = (item) => {
+    setActiveNavItem(item);
+  };
+
   return (
-    <Navbar shouldHideOnScroll maxWidth='xl'>
-      <NavbarBrand>
-        <img src={Logo} alt="PetCare" className="w-12 h-12 me-3" />
-      </NavbarBrand>
+    <Navbar isBordered shouldHideOnScroll maxWidth='xl' onMenuOpenChange={setIsMenuOpen}
+      classNames={{
+        item: [
+          "flex",
+          "relative",
+          "h-full",
+          "items-center",
+          "data-[active=true]:after:content-['']",
+          "data-[active=true]:after:absolute",
+          "data-[active=true]:after:bottom-0",
+          "data-[active=true]:after:left-0",
+          "data-[active=true]:after:right-0",
+          "data-[active=true]:after:h-[2px]",
+          "data-[active=true]:after:rounded-[2px]",
+          "data-[active=true]:after:bg-primary",
+        ]
+      }}>
+      <NavbarContent>
+        <NavbarMenuToggle
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          className="sm:hidden"
+        />
+        <NavbarBrand>
+          <img src={Logo} alt="PetCare" className="w-12 h-12 me-3" />
+        </NavbarBrand>
+      </NavbarContent>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <Link color="foreground" href="#" isDisabled="true">
-            Acerca de nosotros
+        <NavbarItem isActive={activeNavItem === 'Citas'}>
+          <Link color="foreground" href="Citas" isDisabled="true" onClick={() => handleNavItemClick('Citas')}>
+            Citas
           </Link>
         </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#" isDisabled="true">
-            Casos de exito
+        <NavbarItem isActive={activeNavItem === 'Clientes'}>
+          <Link color="foreground" href="Clientes" isDisabled="true" onClick={() => handleNavItemClick('Clientes')}>
+            Clientes
           </Link>
         </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#" isDisabled="true">
-            Contacto
+        <NavbarItem isActive={activeNavItem === 'Mascotas'}>
+          <Link color="foreground" href="Mascotas" isDisabled="true" onClick={() => handleNavItemClick('Mascotas')}>
+            Mascotas
+          </Link>
+        </NavbarItem>
+        <NavbarItem isActive={activeNavItem === 'Historial'}>
+          <Link color="foreground" href="Historial" isDisabled="true" onClick={() => handleNavItemClick('Historial')}>
+            Historial
           </Link>
         </NavbarItem>
       </NavbarContent>
@@ -50,7 +90,7 @@ const NavBar = () => {
             )}
           </button>
         </NavbarItem>
-        <NavbarItem className="hidden lg:flex">
+        <NavbarItem className="">
           <Link to={"/"}>
             <Button color="danger" variant="flat">
               Cerrar Sesión
@@ -58,6 +98,22 @@ const NavBar = () => {
           </Link>
         </NavbarItem>
       </NavbarContent>
+      <NavbarMenu>
+        {menuItems.map((item, index) => (
+          <NavbarMenuItem key={`${item}-${index}`}>
+            <Link
+              color={
+                index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
+              }
+              className="w-full"
+              href="#"
+              size="lg"
+            >
+              {item}
+            </Link>
+          </NavbarMenuItem>
+        ))}
+      </NavbarMenu>
     </Navbar>
   )
 }

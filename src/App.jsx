@@ -14,10 +14,10 @@ function App() {
   return (
     <Browser>
       <Routes>
-        <Route path="/" element={<Inicio/>} />
-        <Route path="/Register" element={<Register/>} />
-        <Route path="/HomeAdmin" element={<HomeAdmin/>} />
-        <Route path="/HomeUser" element={<HomeUser/>} />
+        <Route path="/" element={<Inicio />} />
+        <Route path="/Register" element={<Register />} />
+        <Route path="/Citas" element={<HomeAdmin />} />
+        <Route path="/HomeUser" element={<HomeUser />} />
         <Route path="/Clientes" element={<Clientes />} />
         <Route path="/Mascotas" element={<Mascotas />} />
       </Routes>
