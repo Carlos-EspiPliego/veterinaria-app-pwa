@@ -29,6 +29,7 @@ import { columns, citas, statusOptions } from "./utils/dataCitas";
 import { capitalize } from "./utils/utils";
 
 import AddCitaModal from "@components/admin/citas/AddCitaModal";
+import { IconCalendarCancel } from "@tabler/icons-react";
 
 const statusColorMap = {
   COMPLETADA: "success",
@@ -143,17 +144,22 @@ const Home = () => {
         return (
           <div className="relative flex justify-center align-self-center items-center gap-2">
             <div className="relative flex items-center gap-2">
-              <Tooltip content="Details">
+              <Tooltip content="Ver más">
                 <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                   <IconEye onClick={onOpen} />
                 </span>
               </Tooltip>
-              <Tooltip content="Edit user">
+              <Tooltip content="Editar cita">
                 <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                   <IconEdit onClick={onOpen} />
                 </span>
               </Tooltip>
-              <Tooltip color="danger" content="Delete user">
+              <Tooltip color="warning" content="Cancelar cita">
+                <span className="text-lg text-warning cursor-pointer active:opacity-50">
+                  <IconCalendarCancel />
+                </span>
+              </Tooltip>
+              <Tooltip color="danger" content="Eliminar cita">
                 <span className="text-lg text-danger cursor-pointer active:opacity-50">
                   <IconTrash />
                 </span>

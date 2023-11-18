@@ -1,4 +1,5 @@
 import './App.css'
+import React from 'react'
 
 import { BrowserRouter as Browser, Routes, Route } from 'react-router-dom'
 
@@ -12,7 +13,7 @@ import Mascotas from '@pages/Admin/Mascotas'
 function App() {
 
   return (
-    <Browser>
+    <Browser >
       <Routes>
         <Route path="/" element={<Inicio />} />
         <Route path="/Register" element={<Register />} />

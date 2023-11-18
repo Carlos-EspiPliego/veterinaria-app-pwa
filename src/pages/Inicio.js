@@ -1,6 +1,6 @@
-import '../styles/Inicio.scss'
-import NavBar from '../components/NavBarIntro';
-import LoginForm from '../containers/auth/LoginForm';
+import '@styles/Inicio.scss'
+import NavBar from '@components/NavBarIntro';
+import LoginForm from '@containers/auth/LoginForm';
 
 const Inicio = () => {
 
@@ -10,7 +10,6 @@ const Inicio = () => {
       <div className='flex justify-center items-center h-screen px-4'>
         <LoginForm />
       </div>
-
     </div>
   )
 }
