@@ -11,6 +11,8 @@ import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Button, NavbarMenuToggl
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
+import { logout } from '@features/auth/authSlice'
+
 const NavBar = () => {
   const theme = useSelector((state) => state.theme.theme);
   const dispatch = useDispatch();
@@ -30,6 +32,10 @@ const NavBar = () => {
   const handleNavItemClick = (item) => {
     setActiveNavItem(item);
   };
+
+  const onLogout = () => {
+    dispatch(logout());
+  }
 
   return (
     <Navbar isBordered shouldHideOnScroll maxWidth='xl' onMenuOpenChange={setIsMenuOpen}
@@ -60,22 +66,22 @@ const NavBar = () => {
       </NavbarContent>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem isActive={activeNavItem === 'Citas'}>
-          <Link color="foreground" href="Citas" isDisabled="true" onClick={() => handleNavItemClick('Citas')}>
+          <Link color="foreground" to="/Citas" isDisabled={true} onClick={() => handleNavItemClick('Citas')}>
             Citas
           </Link>
         </NavbarItem>
         <NavbarItem isActive={activeNavItem === 'Clientes'}>
-          <Link color="foreground" href="Clientes" isDisabled="true" onClick={() => handleNavItemClick('Clientes')}>
+          <Link color="foreground" to="/Clientes" isDisabled={true} onClick={() => handleNavItemClick('Clientes')}>
             Clientes
           </Link>
         </NavbarItem>
         <NavbarItem isActive={activeNavItem === 'Mascotas'}>
-          <Link color="foreground" href="Mascotas" isDisabled="true" onClick={() => handleNavItemClick('Mascotas')}>
+          <Link color="foreground" to="/Mascotas" isDisabled={true} onClick={() => handleNavItemClick('Mascotas')}>
             Mascotas
           </Link>
         </NavbarItem>
         <NavbarItem isActive={activeNavItem === 'Historial'}>
-          <Link color="foreground" href="Historial" isDisabled="true" onClick={() => handleNavItemClick('Historial')}>
+          <Link color="foreground" to="/Historial" isDisabled={true} onClick={() => handleNavItemClick('Historial')}>
             Historial
           </Link>
         </NavbarItem>
@@ -92,7 +98,7 @@ const NavBar = () => {
         </NavbarItem>
         <NavbarItem className="">
           <Link to={"/"}>
-            <Button color="danger" variant="flat">
+            <Button color="danger" variant="flat" onPress={onLogout}>
               Cerrar Sesión
             </Button>
           </Link>
@@ -106,7 +112,7 @@ const NavBar = () => {
                 index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
               }
               className="w-full"
-              href="#"
+              to="#"
               size="lg"
             >
               {item}

@@ -5,7 +5,8 @@ import { IconEye, IconEyeClosed, IconLogin2 } from '@tabler/icons-react';
 
 import { Link } from 'react-router-dom';
 
-const LoginForm = () => {
+const LoginForm = (props) => {
+    const { userData, handleInputChange, handleLogin } = props;
     const [isVisible, setIsVisible] = useState(false);
 
     const toggleVisibility = () => setIsVisible(!isVisible);
@@ -22,12 +23,13 @@ const LoginForm = () => {
                 <Input
                     isClearable
                     type="email"
-                    label="Email"
+                    label="Username"
                     variant="bordered"
-                    placeholder="Enter your email"
+                    placeholder="Enter your username"
                     defaultValue=""
                     onClear={() => console.log("input cleared")}
                     className="mb-3 w-[100%]"
+                    onChange={(e) => handleInputChange('username', e.target.value)}
                 />
                 <Input
                     label="Password"
@@ -44,20 +46,13 @@ const LoginForm = () => {
                     }
                     type={isVisible ? "text" : "password"}
                     className='w-[100%]'
+                    onChange={(e) => handleInputChange('password', e.target.value)}
                 />
             </CardBody>
             <CardFooter className='flex flex-col'>
-                <Link to="Citas" className='w-full'>
-                    <Button color="primary" radius='full' auto endContent={<IconLogin2 />} className='w-[100%] mb-3'>
-                        Iniciar Sesión (Admin)
-                    </Button>
-                </Link>
-                <Link to="HomeUser" className='w-full'>
-                    <Button color="primary" radius='full' endContent={<IconLogin2 />} className='w-[100%] mb-3'>
-                        Iniciar Sesión (User)
-                    </Button>
-                </Link>
-                <span className=''>¿Aún no tienes cuenta? <Link to="Register" className="text-primary">Regístrate</Link></span>
+                <Button color="primary" radius='full' endContent={<IconLogin2 />} className='w-[100%] mb-3' onPress={handleLogin}>
+                    Iniciar Sesión
+                </Button>
             </CardFooter>
         </Card>
     )
