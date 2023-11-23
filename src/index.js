@@ -9,7 +9,7 @@ import { NextUIProvider } from "@nextui-org/react";
 import { Provider } from 'react-redux'
 import { store } from './app/store'
 
-function Main() {
+function Index() {
   const [theme, setTheme] = useState("light");
 
   const toggleTheme = () => {
@@ -29,4 +29,4 @@ function Main() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<Main />);
+ReactDOM.createRoot(document.getElementById("root")).render(<Index />);

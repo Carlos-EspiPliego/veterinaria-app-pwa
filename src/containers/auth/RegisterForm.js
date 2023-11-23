@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Button, Image, Input, Card, CardHeader, CardBody, CardFooter, Divider } from "@nextui-org/react";
+import { Button, Image, Input, Card, CardHeader, CardBody, CardFooter, Select, SelectItem } from "@nextui-org/react";
 
 import { IconEye, IconEyeClosed, IconLogin2 } from '@tabler/icons-react';
 
 import { Link } from 'react-router-dom';
 
-const RegisterForm = () => {
+const RegisterForm = (props) => {
+    const { userData, handleInputChange, handleRegister } = props;
     const [isVisible, setIsVisible] = useState(false);
 
     const toggleVisibility = () => setIsVisible(!isVisible);
@@ -24,8 +25,52 @@ const RegisterForm = () => {
                     label="Name"
                     variant="bordered"
                     placeholder="Enter your name"
-                    // value={nombre}
-                    // onChange={(e) => setNombre(e.target.value)}
+                    onChange={(e) => handleInputChange('nombre', e.target.value)}
+                    className="mb-3"
+                />
+                <Input
+                    type="text"
+                    label="Last Name"
+                    variant="bordered"
+                    placeholder="Enter your Last name"
+                    onChange={(e) => handleInputChange('apellido', e.target.value)}
+                    className="mb-3"
+                />
+                <Input
+                    type="tel"
+                    label="Cellphone Number"
+                    variant="bordered"
+                    placeholder="Enter your cellphone number"
+                    onChange={(e) => handleInputChange('telefono', e.target.value)}
+                    className="mb-3"
+                />
+                <Input
+                    type="text"
+                    label="Nombre de tu veterinaria"
+                    variant="bordered"
+                    placeholder="Ingresa el nombre de tu veterinaria"
+                    onChange={(e) => handleInputChange('veterinariaName', e.target.value)}
+                    className="mb-3"
+                />
+                
+                <Select
+                    label="Select a role"
+                    className="mb-3"
+                    onChange={(e) => handleInputChange('rol', e.target.value)}
+                >
+                    <SelectItem key={"ADMINISTRADOR"} value="ADMINISTRADOR">Administrador</SelectItem>
+                    <SelectItem key={"CLIENTE"} value="CLIENTE">Cliente</SelectItem>
+
+                </Select>
+                <Input
+                    isClearable
+                    type="username"
+                    label="Username"
+                    variant="bordered"
+                    placeholder="Enter your username"
+                    defaultValue=""
+                    onClear={() => console.log("input cleared")}
+                    onChange={(e) => handleInputChange('username', e.target.value)}
                     className="mb-3"
                 />
                 <Input
@@ -36,15 +81,7 @@ const RegisterForm = () => {
                     placeholder="Enter your email"
                     defaultValue=""
                     onClear={() => console.log("input cleared")}
-                    className="mb-3"
-                />
-                <Input
-                    type="tel"
-                    label="Cellphone Number"
-                    variant="bordered"
-                    placeholder="Enter your cellphone number"
-                    // value={telefono}
-                    // onChange={(e) => setTelefono(e.target.value)}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
                     className="mb-3"
                 />
                 <Input
@@ -62,6 +99,7 @@ const RegisterForm = () => {
                     }
                     type={isVisible ? "text" : "password"}
                     className="mb-3"
+                    onChange={(e) => handleInputChange('password', e.target.value)}
                 />
                 <Input
                     label="Repeat Password"
@@ -80,7 +118,7 @@ const RegisterForm = () => {
                 />
             </CardBody>
             <CardFooter className='flex flex-col'>
-                <Button color="primary" radius='full' auto endContent={<IconLogin2 />} className='w-[100%] mb-3'>
+                <Button color="primary" radius='full' auto endContent={<IconLogin2 />} className='w-[100%] mb-3' onPress={handleRegister}>
                     Registrarse
                 </Button>
                 <span className=''>¿Ya tienes cuenta? <Link to="/" className="text-primary">Iniciar Sesión</Link></span>

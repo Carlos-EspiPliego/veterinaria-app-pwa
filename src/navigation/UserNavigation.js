@@ -4,10 +4,11 @@ import { BrowserRouter as Browser, Routes, Route } from 'react-router-dom'
 import Home from '../pages/User/Home'
 
 const UserNavigation = () => {
+  console.log("Entró a UserNavigation")
   return (
     <Browser>
       <Routes>
-      <Route path="/HomeUser" element={<Home />} />
+        <Route path="/" element={<Home />} />
       </Routes>
     </Browser>
   )
