@@ -5,13 +5,13 @@ const direccionIp = '192.168.0.7'
 const URL_API = `http://${direccionIp}:2812/petcitas/usuario`;
 
 const initialState = {
-    citas: null,
+    mascotas: null,
     status: 'idle',
     error: null,
 }
 
-// Función para traer todas las citas
-const getCitasAsync = createAsyncThunk('citas/getCitas', async () => {
+//Función para traer todas las mascotas
+const getMascotasAsync = createAsyncThunk('mascotas/getMascotas', async () => {
     try {
         const response = await axios.get(`${URL_API}/all`, {
             headers: {
@@ -23,7 +23,7 @@ const getCitasAsync = createAsyncThunk('citas/getCitas', async () => {
             mode: "no-cors",
         })
         const data = response.data;
-        console.log("getCitasAsync: => " + JSON.stringify(data, null, 2));
+        console.log("getMascotasAsync: => " + JSON.stringify(data, null, 2));
         return data;
     } catch (error) {
         console.log(error);
@@ -31,39 +31,39 @@ const getCitasAsync = createAsyncThunk('citas/getCitas', async () => {
     }
 })
 
-const citasSlice = createSlice({
-    name: 'citas',
+const mascotasSlice = createSlice({
+    name: 'mascotas',
     initialState,
     reducers: {
-        getCitas: {
+        getMascotas: {
             reducer(state, action) {
-                state.citas = action.payload;
+                state.mascotas = action.payload;
             },
-            prepare(citas) {
+            prepare(mascotas) {
                 return {
-                    payload: citas
+                    payload: mascotas
                 }
             }
         }
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getCitasAsync.pending, (state) => {
+            .addCase(getMascotasAsync.pending, (state) => {
                 state.status = 'loading';
             })
-            .addCase(getCitasAsync.fulfilled, (state, action) => {
+            .addCase(getMascotasAsync.fulfilled, (state, action) => {
                 state.status = 'success';
-                state.citas = action.payload;
+                state.mascotas = action.payload;
             })
-            .addCase(getCitasAsync.rejected, (state, action) => {
+            .addCase(getMascotasAsync.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
             })
     }
 })
 
-export const { getCitas } = citasSlice.actions;
+export const { getMascotas } = mascotasSlice.actions;
 
-export default citasSlice.reducer;
+export default mascotasSlice.reducer;
 
-export { getCitasAsync }
+export { getMascotasAsync }

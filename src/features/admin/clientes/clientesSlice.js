@@ -5,13 +5,13 @@ const direccionIp = '192.168.0.7'
 const URL_API = `http://${direccionIp}:2812/petcitas/usuario`;
 
 const initialState = {
-    citas: null,
+    users: null,
     status: 'idle',
     error: null,
 }
 
-// Función para traer todas las citas
-const getCitasAsync = createAsyncThunk('citas/getCitas', async () => {
+// Función para traer todos los clientes
+const getClientsAsync = createAsyncThunk('auth/getClients', async () => {
     try {
         const response = await axios.get(`${URL_API}/all`, {
             headers: {
@@ -23,7 +23,7 @@ const getCitasAsync = createAsyncThunk('citas/getCitas', async () => {
             mode: "no-cors",
         })
         const data = response.data;
-        console.log("getCitasAsync: => " + JSON.stringify(data, null, 2));
+        console.log("getClientsAsync: => " + JSON.stringify(data, null, 2));
         return data;
     } catch (error) {
         console.log(error);
@@ -31,39 +31,39 @@ const getCitasAsync = createAsyncThunk('citas/getCitas', async () => {
     }
 })
 
-const citasSlice = createSlice({
-    name: 'citas',
+const clientesSlice = createSlice({
+    name: 'clientes',
     initialState,
     reducers: {
-        getCitas: {
+        getClientes: {
             reducer(state, action) {
-                state.citas = action.payload;
+                state.users = action.payload;
             },
-            prepare(citas) {
+            prepare(users) {
                 return {
-                    payload: citas
+                    payload: users
                 }
             }
         }
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getCitasAsync.pending, (state) => {
+            .addCase(getClientsAsync.pending, (state) => {
                 state.status = 'loading';
             })
-            .addCase(getCitasAsync.fulfilled, (state, action) => {
+            .addCase(getClientsAsync.fulfilled, (state, action) => {
                 state.status = 'success';
-                state.citas = action.payload;
+                state.users = action.payload;
             })
-            .addCase(getCitasAsync.rejected, (state, action) => {
+            .addCase(getClientsAsync.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
             })
     }
 })
 
-export const { getCitas } = citasSlice.actions;
+export const { getClientes } = clientesSlice.actions;
 
-export default citasSlice.reducer;
+export default clientesSlice.reducer;
 
-export { getCitasAsync }
+export { getClientsAsync }
