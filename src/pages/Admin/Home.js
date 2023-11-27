@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import CircularJSON from 'circular-json';
 import NavBar from "@components/NavBar";
 import ButtonNavBar from "@components/ButtonNavBar";
 import "@styles/Home.scss";
-
+import { format } from 'date-fns';
 import {
   Table,
   TableHeader,
@@ -25,11 +26,17 @@ import {
 
 import { IconPlus, IconSearch, IconChevronDown, IconEye, IconEdit, IconTrash } from '@tabler/icons-react';
 // import { columns, users, statusOptions } from "./utils/data";
-import { columns, citas, statusOptions } from "./utils/dataCitas";
+import { columns, statusOptions } from "./utils/dataCitas";
 import { capitalize } from "./utils/utils";
 
 import AddCitaModal from "@components/admin/citas/AddCitaModal";
 import { IconCalendarCancel } from "@tabler/icons-react";
+
+import { useSelector, useDispatch } from "react-redux";
+import { getCitasAsync } from "@features/admin/citas/citasSlice";
+import { registrarCita } from "../../services/admin/citas/citasApi";
+import { getClientesAsync } from "@features/admin/clientes/clientesSlice";
+import { getMascotasAsync } from "@features/admin/mascotas/mascotasSlice";
 
 const statusColorMap = {
   COMPLETADA: "success",
@@ -37,10 +44,27 @@ const statusColorMap = {
   PENDIENTE: "warning",
 }
 
-const INITIAL_VISIBLE_COLUMNS = ["idCita", "cliente.name", "mascotas", "fechaHora", "estatus", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["id", "cliente.nombre", "mascota", "fecha", "actions"];
 
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth.user);
+  const citasRedux = useSelector((state) => state.citas.citas);
+  const [citas, setCitas] = useState([]);
+  const [citaData, setCitaData] = useState({
+    fecha: "",
+    descripcion: "",
+    veterinaria: {
+      id: auth.veterinaria.id
+    },
+    cliente: {
+      username: "",
+    },
+    mascota: {
+      id: ""
+    }
+  });
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
@@ -48,10 +72,131 @@ const Home = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sortDescriptor, setSortDescriptor] = useState({
-    column: "fechaHora",
-    direction: "descending",
+    column: "fecha",
+    direction: "ascending",
   });
   const [page, setPage] = useState(1);
+
+  // Modal y filtrado
+  const [clienteSeleccionado, setClienteSeleccionado] = useState('')
+  const [mascotaSeleccionada, setMascotaSeleccionada] = useState('')
+
+  const [clientes, setClientes] = useState(useSelector(state => state.clientes.clientes))
+
+  const [mascotas, setMascotas] = useState(useSelector(state => state.mascotas.mascotas))
+  const [mascotasFiltradas, setMascotasFiltradas] = useState([])
+
+  useEffect(() => {
+    const mascotasFiltradas = mascotas.filter(mascota => mascota.cliente.username === clienteSeleccionado)
+    setMascotasFiltradas(mascotasFiltradas)
+  }, [clienteSeleccionado, mascotas])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const clienteData = {
+        rol: "CLIENTE",
+        veterinaria: {
+          id: auth.veterinaria.id,
+        },
+      };
+      const mascotaData = {
+        veterinaria: {
+          id: auth.veterinaria.id,
+        },
+      };
+
+      try {
+        const clientesResponse = await dispatch(getClientesAsync(clienteData));
+        setClientes(clientesResponse.payload); // Suponiendo que el resultado está en el campo "payload"
+
+        const mascotasResponse = await dispatch(getMascotasAsync(mascotaData));
+        setMascotas(mascotasResponse.payload); // Suponiendo que el resultado está en el campo "payload"
+      } catch (error) {
+        // Manejar errores si es necesario
+        console.error("Error al obtener clientes o mascotas:", error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch, auth.veterinaria.id]);
+
+  useEffect(() => {
+    onGetCitas();
+  }, []);
+
+  useEffect(() => {
+    setCitas(citasRedux);
+  }, [citasRedux])
+
+  const onGetCitas = () => {
+    const citaData = {
+      fecha: onCurrentDate(),
+      veterinaria: {
+        id: auth.veterinaria.id,
+      }
+    }
+    dispatch(getCitasAsync(citaData));
+  }
+
+  const onCurrentDate = () => {
+    const fechaHoraActual = new Date();
+    const fechaHoraFormateada = format(fechaHoraActual, 'yyyy-MM-dd HH:mm:ss');
+    return fechaHoraFormateada;
+  }
+
+  const handleInputChange = (name, value) => {
+    if (name === 'clienteUsername') {
+      // Si estás modificando el nombre de la veterinaria
+      setCitaData({
+        ...citaData,
+        cliente: {
+          ...citaData.cliente,
+          username: value
+        }
+      });
+    } else if (name === 'mascotaId') {
+      setCitaData({
+        ...citaData,
+        mascota: {
+          ...citaData.mascota,
+          id: value
+        }
+      });
+    }
+    else {
+      setCitaData({ ...citaData, [name]: value });
+    }
+    // console.log("HandleInputChange: => " + CircularJSON.stringify(citaData, null, 2));
+  };
+
+  const handleRegisterCita = () => {
+    // console.log("entro a handleRegisterCita: " + CircularJSON.stringify(citaData, null, 2));
+    registrarCita(citaData).then((response) => {
+      // console.log(response);
+      onGetCitas();
+      formatearFormulario();
+      //Cerrar modal
+      onOpenChange();
+    });
+  }
+
+  const formatearFormulario = () => {
+    setCitaData({
+      fecha: "",
+      descripcion: "",
+      veterinaria: {
+        id: auth.veterinaria.id
+      },
+      cliente: {
+        username: "",
+      },
+      mascota: {
+        id: ""
+      }
+    });
+  }
+
+  // Metodos para renderizar la tabla
 
   const hasSearchFilter = Boolean(filterValue);
 
@@ -101,7 +246,7 @@ const Home = () => {
     const cellValue = cita[columnKey];
 
     switch (columnKey) {
-      case "cliente.name":
+      case "cliente.nombre":
         return (
           <User
             avatarProps={{ radius: "lg" }}
@@ -126,19 +271,18 @@ const Home = () => {
             </Chip>
           </div>
         );
-      case "mascotas":
+      case "mascota":
         // Handle the case when cellValue is an array of mascotas
-        return Array.isArray(cellValue) ? (
+        return (
           <div>
-            {cellValue.map((mascota) => (
-              <div key={mascota.id}>
-                {mascota.name} - {mascota.raza}
-              </div>
-            ))}
+            <div>
+              {cellValue.nombre}
+            </div>
+            <div>
+              {cellValue.raza}
+            </div>
+            {/* Agrega aquí otras propiedades de la mascota que deseas mostrar */}
           </div>
-        ) : (
-          // Fallback if cellValue is not an array
-          cellValue
         );
       case "actions":
         return (
@@ -340,7 +484,7 @@ const Home = () => {
             topContentPlacement="outside"
             onSelectionChange={setSelectedKeys}
             onSortChange={setSortDescriptor}
-            selectionMode="single" 
+            selectionMode="single"
           >
             <TableHeader columns={headerColumns}>
               {(column) => (
@@ -355,7 +499,7 @@ const Home = () => {
             </TableHeader>
             <TableBody emptyContent={"No citas found"} items={sortedItems}>
               {(item) => (
-                <TableRow key={item.idCita}>
+                <TableRow key={item.id}>
                   {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
                 </TableRow>
               )}
@@ -363,7 +507,14 @@ const Home = () => {
           </Table>
         </div>
       </div>
-      <AddCitaModal isOpen={isOpen} onOpenChange={onOpenChange} />
+      <AddCitaModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        citaData={citaData} handleInputChange={handleInputChange}
+        handleRegisterCita={handleRegisterCita}
+        clientes={clientes} clienteSeleccionado={clienteSeleccionado} setClienteSeleccionado={setClienteSeleccionado}
+        mascotas={mascotas} mascotasFiltradas={mascotasFiltradas} mascotaSeleccionada={mascotaSeleccionada} setMascotaSeleccionada={setMascotaSeleccionada}
+      />
     </div>
   );
 }

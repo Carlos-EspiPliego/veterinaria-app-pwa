@@ -2,18 +2,18 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const direccionIp = '192.168.0.7'
-const URL_API = `http://${direccionIp}:2812/petcitas/usuario`;
+const URL_API = `http://${direccionIp}:2812/petcitas/cita`;
 
 const initialState = {
-    citas: null,
+    citas: [],
     status: 'idle',
     error: null,
 }
 
 // Función para traer todas las citas
-const getCitasAsync = createAsyncThunk('citas/getCitas', async () => {
+const getCitasAsync = createAsyncThunk('citas/getCitas', async ( citaData ) => {
     try {
-        const response = await axios.get(`${URL_API}/all`, {
+        const response = await axios.post(`${URL_API}/obtenerCitas`, citaData, {
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Headers":
@@ -22,8 +22,8 @@ const getCitasAsync = createAsyncThunk('citas/getCitas', async () => {
             },
             mode: "no-cors",
         })
-        const data = response.data;
-        console.log("getCitasAsync: => " + JSON.stringify(data, null, 2));
+        const data = response.data.responses;
+        // console.log("getCitasAsync: => " + JSON.stringify(data, null, 2));
         return data;
     } catch (error) {
         console.log(error);

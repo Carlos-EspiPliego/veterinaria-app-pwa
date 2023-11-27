@@ -35,7 +35,7 @@ const Register = () => {
       // Para otros campos en el estado userData
       setUserData({ ...userData, [name]: value });
     }
-    console.log("HandleInputChange: => " + JSON.stringify(userData, null, 2));
+    console.log("HandleInputChange: => " + userData);
   }
 
   const handleRegister = () => {

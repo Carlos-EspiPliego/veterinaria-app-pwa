@@ -5,15 +5,16 @@ const direccionIp = '192.168.0.7'
 const URL_API = `http://${direccionIp}:2812/petcitas/usuario`;
 
 const initialState = {
-    users: null,
+    users: [],
     status: 'idle',
     error: null,
 }
 
 // Función para traer todos los clientes
-const getClientsAsync = createAsyncThunk('auth/getClients', async () => {
+const getClientesAsync = createAsyncThunk('cliente/obtenerUsuarios', async (userData) => {
+    // console.log("Entró a getClientesAsync :DD => : " + JSON.stringify(userData, null, 2))
     try {
-        const response = await axios.get(`${URL_API}/all`, {
+        const response = await axios.post(`${URL_API}/obtenerUsuarios`, userData, {
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Headers":
@@ -22,8 +23,8 @@ const getClientsAsync = createAsyncThunk('auth/getClients', async () => {
             },
             mode: "no-cors",
         })
-        const data = response.data;
-        console.log("getClientsAsync: => " + JSON.stringify(data, null, 2));
+        const data = response.data.responses;
+        // console.log("getClientsAsync: => " + JSON.stringify(data, null, 2));
         return data;
     } catch (error) {
         console.log(error);
@@ -48,14 +49,14 @@ const clientesSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getClientsAsync.pending, (state) => {
+            .addCase(getClientesAsync.pending, (state) => {
                 state.status = 'loading';
             })
-            .addCase(getClientsAsync.fulfilled, (state, action) => {
+            .addCase(getClientesAsync.fulfilled, (state, action) => {
                 state.status = 'success';
                 state.users = action.payload;
             })
-            .addCase(getClientsAsync.rejected, (state, action) => {
+            .addCase(getClientesAsync.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
             })
@@ -66,4 +67,4 @@ export const { getClientes } = clientesSlice.actions;
 
 export default clientesSlice.reducer;
 
-export { getClientsAsync }
+export { getClientesAsync }

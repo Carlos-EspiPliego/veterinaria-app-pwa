@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 const direccionIp = '192.168.0.7'
-const URL_API = `http://${direccionIp}:2812/petcitas/usuario`;
+const URL_API = `http://${direccionIp}:2812/petcitas/cita`;
 
 export const registrarCita = async ( userData ) => {
-    console.log("Entró a registrarCita :DD => : " + JSON.stringify(userData, null, 2))
+    // console.log("Entró a registrarCita :DD => : " + JSON.stringify(userData, null, 2))
     try {
         const response = await axios.post(`${URL_API}/add`, userData, {
             headers: {

@@ -4,7 +4,7 @@ import Clientes from '@pages/Admin/Clientes'
 import Mascotas from '@pages/Admin/Mascotas'
 
 const AdminNavigation = () => {
-  console.log("Entró a AdminNavigation")
+  
   return (
     <Browser>
       <Routes>
