@@ -1,14 +1,18 @@
-import {useState, useEffect, useRef} from 'react'
+import {useState, useEffect } from 'react'
 import NavBar from '@components/NavBar'
-import ButtonNavBar from '@components/ButtonNavBar'
 import FormClientes from "@containers/FormClientes"
 import ListadoClientes from "@containers/ListadoClientes"
 import ModalFormCliente from '@containers/ModalFormCliente'
-import axios from "axios";
+
+import { registrarCliente } from '../../services/admin/clientes/clientesApi'
+
+import { useSelector } from 'react-redux';
+
 import '@styles/Clientes.scss'
 
 
 const Clientes = () => {
+  const authState = useSelector(state => state.auth.user);
   // ----------------- VARIABLES PARA EL MODAL -----------------
   const [show, setShow] = useState(false);
   const showModal = () => {
@@ -39,128 +43,51 @@ const Clientes = () => {
 
   // ----------------- VARIABLES PARA EL FORMULARIO -----------------
   const [client, setClient] = useState({
-    idCliente: "",
-    nombre: "",
-    apellidos: "",
-    telefono: "",
+    username: "",
+    password: "",
     email: "",
+    nombre: "",
+    apellido: "",
+    telefono: "",
+    rol: "CLIENTE",
+    veterinaria:{
+        id: authState.veterinaria.id
+    }
   });
 
-  const formCliente = useRef(null);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("hanldeSubmit");
-    const formData = new FormData(formCliente.current);
-
-    if (client.idCliente === "" || client.idCliente === undefined) {
-      console.log("Es una nueva cita -> ");
-      console.log(client);
-
-      const urlAdd = "http://srchicharron.com:8080/dancing-queen/clientes/addcliente";
-      //const urlAdd = "http://localhost:2813/mascotas/addmascota";
-      const newCliente = {
-            nombre:formData.get('nombre'),
-            apellidos:formData.get('apellidos'),
-            telefono:formData.get('telefono'),
-            email:formData.get('email')
-      };
-      console.log("Datos del nuevo cliente");
-      console.log(newCliente);
-      axios({
-        method: "POST",
-        url: urlAdd,
-        data: JSON.stringify(newCliente),
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Headers":
-            "POST, GET, PUT, DELETE, OPTIONS, HEAD, Authorization, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin",
-          "Content-Type": "application/json",
-        },
-        mode: "no-cors",
-      })
-        .then((response) => {
-          console.log(response);
-          formatearFormulario();
-          fetchClientes();
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    } else {
-      console.log("Se tiene que editar este cliente -> " + client.idCliente);
-      console.log(client);
-
-      const urlEdit = "http://srchicharron.com:8080/dancing-queen/clientes/updatecliente";
-      //const urlEdit = "http://localhost:2813/mascotas/updatemascota";
-      const newCliente = {
-            id: client.idCliente,
-            nombre:formData.get('nombre'),
-            apellidos:formData.get('apellidos'),
-            telefono:formData.get('telefono'),
-            email:formData.get('email')
-      };
-      console.log("Datos del newCliente");
-      console.log(newCliente);
-      axios({
-        method: "POST",
-        url: urlEdit,
-        data: JSON.stringify(newCliente),
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Headers":
-            "POST, GET, PUT, DELETE, OPTIONS, HEAD, Authorization, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin",
-          "Content-Type": "application/json",
-        },
-        mode: "no-cors",
-      })
-        .then((response) => {
-          console.log(response);
-          fetchClientes();
-          formatearFormulario();
-        })
-        .catch((error) => {
-          formatearFormulario();
-          console.error(error);
-        });
-    }
-    formatearFormulario();
+  const handleRegisterSubmit = () => {
+    console.log("entro a handleRegisterSubmit");
+    registrarCliente(client).then((response) => {
+      console.log(response);
+      formatearFormulario();
+    });
   };
 
-  const onDelete = () => {
+  const handleDelete = () => {
     
-    console.log("onDeleteOrigin");
-    formatearFormulario();
-    fetchClientes();
+    
   };
 
   const formatearFormulario = () => {
     // LIMPIAR EL FORMULARIO
     setClient({
-      idCliente: "",
-      nombre: "",
-      apellidos: "",
-      telefono: "",
+      username: "",
+      password: "",
       email: "",
+      nombre: "",
+      apellido: "",
+      telefono: "",
+      rol: "CLIENTE",
+      veterinaria:{
+          id: authState.veterinaria.id
+      }
     });
   };
 
-  const handleChange = (event) => {
-    setClient({ ...client, [event.target.name]: event.target.value });
+  const handleInputChange = (name, value) => {
+    setClient({ ...client, [name]: value });
     console.log(client);
   };
-
-  // ----------------- LISTAR LOS CLIENTES -----------------
-  const urlGetClientes = 'http://srchicharron.com:8080/dancing-queen/clientes/getallclientes';
-  
-  const [clientes, setClientes] = useState([]);
-  const fetchClientes = async () =>{
-    const req = await axios.get(urlGetClientes);
-    setClientes(req.data);
-  };
-  useEffect(()=>{
-		fetchClientes();
-	}, [])
 
   return (
     <div>
@@ -180,36 +107,29 @@ const Clientes = () => {
             setCliente={setClient} 
             show={show} 
             handleClose={handleClose} 
-            handleSubmit={handleSubmit} 
-            handleChange={handleChange} 
-            formatearFormulario={formatearFormulario}
-            formCliente={formCliente}
+            handleSubmit={handleRegisterSubmit}
+            handleInputChange={handleInputChange} 
+            // formCliente={formCliente}
             />)}
             <FormClientes 
               client={client}
-              setClient={setClient}
-              show={show}
-              handleClose={handleClose}
-              handleSubmit={handleSubmit}
-              handleChange={handleChange}
-              formatearFormulario={formatearFormulario}
-              formCliente={formCliente}
+              handleSubmit={handleRegisterSubmit}
+              handleInputChange={handleInputChange}
             />
           </div>
           <div className='content__listClientes'>
             
-            <ListadoClientes 
-              clientes={clientes}
+            {/* <ListadoClientes 
+              // clientes={clientes}
               clienteEdit={client}
               setClienteEdit={setClient}
               showModal={showModal}
               handleClose={handleClose}
               onDelete={onDelete}
-            />
+            /> */}
           </div>
         </div>
       </div>
-      <ButtonNavBar />
     </div>
   )
 }

@@ -1,28 +1,25 @@
 import './App.css'
 import React from 'react'
 
-import { BrowserRouter as Browser, Routes, Route } from 'react-router-dom'
+import { useSelector } from 'react-redux';
 
-import Inicio from './pages/Inicio'
-import Register from './pages/auth/Register'
-import HomeAdmin from './pages/Admin/Home'
-import HomeUser from './pages/User/Home'
-import Clientes from '@pages/Admin/Clientes'
-import Mascotas from '@pages/Admin/Mascotas'
+import AuthNavigation from '@navigation/AuthNavigation';
+import AdminNavigation from '@navigation/AdminNavigation';
+import UserNavigation from '@navigation/UserNavigation';
 
 function App() {
+  const authState = useSelector(state => state.auth);
 
   return (
-    <Browser >
-      <Routes>
-        <Route path="/" element={<Inicio />} />
-        <Route path="/Register" element={<Register />} />
-        <Route path="/Citas" element={<HomeAdmin />} />
-        <Route path="/HomeUser" element={<HomeUser />} />
-        <Route path="/Clientes" element={<Clientes />} />
-        <Route path="/Mascotas" element={<Mascotas />} />
-      </Routes>
-    </Browser>
+    <>
+      {authState.status === 'success' && authState.currentUser && authState.currentUser.rol === 'ADMINISTRADOR' ? (
+        <AdminNavigation />
+      ) : authState.status === 'success' && authState.currentUser && authState.currentUser.rol === 'CLIENTE' ? (
+        <UserNavigation />
+      ) : (
+        <AuthNavigation />
+      )}
+    </>
   )
 }
 

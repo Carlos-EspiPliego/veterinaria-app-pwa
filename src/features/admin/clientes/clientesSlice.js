@@ -2,18 +2,19 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const direccionIp = '192.168.0.7'
-const URL_API = `http://${direccionIp}:2812/petcitas/cita`;
+const URL_API = `http://${direccionIp}:2812/petcitas/usuario`;
 
 const initialState = {
-    citas: [],
+    users: [],
     status: 'idle',
     error: null,
 }
 
-// Función para traer todas las citas
-const getCitasAsync = createAsyncThunk('citas/getCitas', async ( citaData ) => {
+// Función para traer todos los clientes
+const getClientesAsync = createAsyncThunk('cliente/obtenerUsuarios', async (userData) => {
+    // console.log("Entró a getClientesAsync :DD => : " + JSON.stringify(userData, null, 2))
     try {
-        const response = await axios.post(`${URL_API}/obtenerCitas`, citaData, {
+        const response = await axios.post(`${URL_API}/obtenerUsuarios`, userData, {
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Headers":
@@ -23,7 +24,7 @@ const getCitasAsync = createAsyncThunk('citas/getCitas', async ( citaData ) => {
             mode: "no-cors",
         })
         const data = response.data.responses;
-        // console.log("getCitasAsync: => " + JSON.stringify(data, null, 2));
+        // console.log("getClientsAsync: => " + JSON.stringify(data, null, 2));
         return data;
     } catch (error) {
         console.log(error);
@@ -31,39 +32,39 @@ const getCitasAsync = createAsyncThunk('citas/getCitas', async ( citaData ) => {
     }
 })
 
-const citasSlice = createSlice({
-    name: 'citas',
+const clientesSlice = createSlice({
+    name: 'clientes',
     initialState,
     reducers: {
-        getCitas: {
+        getClientes: {
             reducer(state, action) {
-                state.citas = action.payload;
+                state.users = action.payload;
             },
-            prepare(citas) {
+            prepare(users) {
                 return {
-                    payload: citas
+                    payload: users
                 }
             }
         }
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getCitasAsync.pending, (state) => {
+            .addCase(getClientesAsync.pending, (state) => {
                 state.status = 'loading';
             })
-            .addCase(getCitasAsync.fulfilled, (state, action) => {
+            .addCase(getClientesAsync.fulfilled, (state, action) => {
                 state.status = 'success';
-                state.citas = action.payload;
+                state.users = action.payload;
             })
-            .addCase(getCitasAsync.rejected, (state, action) => {
+            .addCase(getClientesAsync.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
             })
     }
 })
 
-export const { getCitas } = citasSlice.actions;
+export const { getClientes } = clientesSlice.actions;
 
-export default citasSlice.reducer;
+export default clientesSlice.reducer;
 
-export { getCitasAsync }
+export { getClientesAsync }
