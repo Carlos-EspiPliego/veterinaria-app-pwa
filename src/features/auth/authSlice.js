@@ -5,8 +5,8 @@ const direccionIp = '192.168.0.7'
 const URL_API = `http://${direccionIp}:2812/petcitas/usuario`;
 
 const initialState = {
-    user: null,
-    currentUser: null,
+    user: [],
+    currentUser: [],
     status: 'idle',
     error: null,
 }

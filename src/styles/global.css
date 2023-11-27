@@ -8,7 +8,6 @@ body {
     font-family: var(--body-font);
     font-size: var(--body-font-size-desk);
     font-weight: var(--font-normal);
-    color: var(--text-color);
     margin: 0;
     padding: 0;
     overflow: hidden;
@@ -35,55 +34,8 @@ p {
     letter-spacing: 0.5%;
     line-height: 1.5;
 }
-a {
-    text-decoration: none;
-    color: var(--text-color);
-}
 
 /*DESHACER TODOS LOS ESTILOS DEL FORM, INCLUYENDO, INPUTS, LABELS, ETC*/
-form, label, input, select {
-    margin: 0;
-    padding: 0;
-}
-select, input, textarea {
-    background-color: #f8f8f8;
-    padding: 0.5rem;
-    border: none;
-    border-radius: 0.2rem;
-    outline: none;
-    font-family: var(--body-font);
-    cursor: pointer;
-    color: #4D4D4D;
-}
-textarea, input {
-    cursor: text;
-}
-textarea {
-    resize: none;
-    height: 5em;
-    scrollbar-width: thin;
-    scrollbar-color: #e9e9e9 #ffffff;
-}
-label {
-    color: #303030;
-}
-.button {
-    padding: 0.5rem 0;
-    border-radius: 4rem;
-    border: none;
-    font-size: var(--body-font-size-desk);
-    margin-bottom: 1rem;
-    background-color: var(--first-color);
-    color: white;
-    font-weight: bold;
-    letter-spacing: 3px;
-    font-family: var(--body-font);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-.button:hover {
-    background-color: var(--first-color-hover);
-}
 
 
 /* QUERY PARA CAMBIAR EL TAMAÑO DE LA TIPOGRAFÍA CUANDO ES TAMAÑO MOBILE */
