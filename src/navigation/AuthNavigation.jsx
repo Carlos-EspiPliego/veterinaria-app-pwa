@@ -1,13 +1,12 @@
 import React from 'react'
-import { BrowserRouter as Browser, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Browser, Routes, Route, Navigate } from 'react-router-dom'
 import Inicio from '@pages/Inicio'
-import Register from '@pages/auth/Register'
 
 const AuthNavigation = () => {
     return (
         <Browser>
-          <Routes>
-            <Route path="/" element={<Inicio />} />
+          <Routes >
+            <Route path="/Inicio" element={<Inicio />} />
           </Routes>
         </Browser>
       )

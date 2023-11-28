@@ -1,5 +1,4 @@
 import '@styles/Inicio.scss'
-import NavBar from '@components/NavBarIntro';
 import LoginForm from '@containers/auth/LoginForm';
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -27,7 +26,6 @@ const Inicio = () => {
 
   return (
     <div className='background'>
-      <NavBar />
       <div className='flex justify-center items-center h-screen px-4'>
         <LoginForm
           userData={userData}

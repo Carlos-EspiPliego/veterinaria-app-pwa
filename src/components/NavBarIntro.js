@@ -37,7 +37,7 @@ const NavBar = () => {
           <Link href="#">Iniciar Sesión</Link>
         </NavbarItem>
         <NavbarItem>
-        <Link to={"/Register"}>
+        <Link to={"/"}>
             <Button color="primary" variant="flat">
               Registrarme
             </Button>

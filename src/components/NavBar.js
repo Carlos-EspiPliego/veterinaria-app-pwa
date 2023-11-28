@@ -65,22 +65,22 @@ const NavBar = () => {
         </NavbarBrand>
       </NavbarContent>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem isActive={activeNavItem === 'Citas'}>
+        <NavbarItem >
           <Link color="foreground" to="/" isDisabled={true} onClick={() => handleNavItemClick('Citas')}>
             Citas
           </Link>
         </NavbarItem>
-        <NavbarItem isActive={activeNavItem === 'Clientes'}>
+        <NavbarItem >
           <Link color="foreground" to="/Clientes" isDisabled={true} onClick={() => handleNavItemClick('Clientes')}>
             Clientes
           </Link>
         </NavbarItem>
-        <NavbarItem isActive={activeNavItem === 'Mascotas'}>
+        <NavbarItem >
           <Link color="foreground" to="/Mascotas" isDisabled={true} onClick={() => handleNavItemClick('Mascotas')}>
             Mascotas
           </Link>
         </NavbarItem>
-        <NavbarItem isActive={activeNavItem === 'Historial'}>
+        <NavbarItem >
           <Link color="foreground" to="/Historial" isDisabled={true} onClick={() => handleNavItemClick('Historial')}>
             Historial
           </Link>
@@ -97,28 +97,34 @@ const NavBar = () => {
           </button>
         </NavbarItem>
         <NavbarItem className="">
-          <Link to="/">
+          <a href="/Inicio">
             <Button color="danger" variant="flat" onPress={onLogout}>
               Cerrar Sesión
             </Button>
-          </Link>
+          </a>
         </NavbarItem>
       </NavbarContent>
       <NavbarMenu>
-        {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
-            <Link
-              color={
-                index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
-              }
-              className="w-full"
-              to="#"
-              size="lg"
-            >
-              {item}
-            </Link>
-          </NavbarMenuItem>
-        ))}
+      <NavbarItem >
+          <Link color="foreground" to="/" isDisabled={true} onClick={() => handleNavItemClick('Citas')}>
+            Citas
+          </Link>
+        </NavbarItem>
+        <NavbarItem >
+          <Link color="foreground" to="/Clientes" isDisabled={true} onClick={() => handleNavItemClick('Clientes')}>
+            Clientes
+          </Link>
+        </NavbarItem>
+        <NavbarItem >
+          <Link color="foreground" to="/Mascotas" isDisabled={true} onClick={() => handleNavItemClick('Mascotas')}>
+            Mascotas
+          </Link>
+        </NavbarItem>
+        <NavbarItem >
+          <Link color="foreground" to="/Historial" isDisabled={true} onClick={() => handleNavItemClick('Historial')}>
+            Historial
+          </Link>
+        </NavbarItem>
       </NavbarMenu>
     </Navbar>
   )
