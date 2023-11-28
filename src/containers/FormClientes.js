@@ -9,7 +9,7 @@ import { IconEye, IconEyeClosed, IconLogin2 } from '@tabler/icons-react';
 const FormClientes = (props) => {
     const { client, handleInputChange, handleSubmit } = props;
     const [isVisible, setIsVisible] = useState(false);
-        const toggleVisibility = () => setIsVisible(!isVisible);
+    const toggleVisibility = () => setIsVisible(!isVisible);
 
     return (
 

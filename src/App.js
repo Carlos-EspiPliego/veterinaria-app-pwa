@@ -1,26 +1,44 @@
-import './App.css'
-import React from 'react'
-
+import React from 'react';
 import { useSelector } from 'react-redux';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import AuthNavigation from '@navigation/AuthNavigation';
-import AdminNavigation from '@navigation/AdminNavigation';
-import UserNavigation from '@navigation/UserNavigation';
+import Inicio from '@pages/Inicio';
+import Home from '@pages/Admin/Home';
+import Clientes from '@pages/Admin/Clientes';
+import Mascotas from '@pages/Admin/Mascotas';
 
-function App() {
-  const authState = useSelector(state => state.auth);
+const App = () => {
+  const authState = useSelector((state) => state.auth);
 
-  return (
-    <>
-      {authState.status === 'success' && authState.currentUser && authState.currentUser.rol === 'ADMINISTRADOR' ? (
-        <AdminNavigation />
-      ) : authState.status === 'success' && authState.currentUser && authState.currentUser.rol === 'CLIENTE' ? (
-        <UserNavigation />
-      ) : (
-        <AuthNavigation />
-      )}
-    </>
-  )
-}
+  const renderNavigation = () => {
+    if (authState.user.rol === 'ADMINISTRADOR') {
+      return (
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/Clientes" element={<Clientes />} />
+          <Route path="/Mascotas" element={<Mascotas />} />
+          <Route path="*" element={<Home />} />
+        </Routes>
+      );
+    } else if (authState.user.rol === 'CLIENTE') {
+      return (
+        <Routes>
+          <Route path="/Inicio" element={<Inicio />} />
+        </Routes>
+      );
+    } else {
+      // Assuming 'AuthNavigation' for other roles
+      return (
+        <Routes>
+          <Route path="/" element={<Inicio />} />
+          {/* //Agregar una ruta por si no encuentra alguna otra */}
+          <Route path="*" element={<Inicio />} />
+        </Routes>
+      );
+    }
+  };
 
-export default App
+  return <Router>{renderNavigation()}</Router>;
+};
+
+export default App;

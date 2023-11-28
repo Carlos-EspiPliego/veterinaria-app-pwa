@@ -5,8 +5,8 @@ const direccionIp = '192.168.0.7'
 const URL_API = `http://${direccionIp}:2812/petcitas/usuario`;
 
 const initialState = {
-    user: [],
-    currentUser: [],
+    user: JSON.parse(localStorage.getItem('currentUser')) || [],
+    currentUser: JSON.parse(localStorage.getItem('currentUser')) || [],
     status: 'idle',
     error: null,
 }
@@ -66,6 +66,7 @@ const authslice = createSlice({
         login: {
             reducer(state, action) {
                 state.user = action.payload;
+                localStorage.setItem('currentUser', JSON.stringify(action));
             },
             prepare(userData) {
                 return {
@@ -76,9 +77,11 @@ const authslice = createSlice({
             }
         },
         logout(state) {
-            state.user = null;
+            state.user = [];
+            state.currentUser = [];
             state.status = 'idle';
-            state.error = null;
+            state.error = [];
+            localStorage.removeItem('currentUser');
         }
     },
     extraReducers: (builder) => {
@@ -90,6 +93,8 @@ const authslice = createSlice({
                 state.status = 'success';
                 state.user = action.payload;
                 state.currentUser = action.payload;
+
+                localStorage.setItem('currentUser', JSON.stringify(action.payload));
             })
             .addCase(loginAsync.rejected, (state, action) => {
                 state.status = 'failed';

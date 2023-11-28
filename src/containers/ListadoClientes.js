@@ -1,7 +1,10 @@
 import React from 'react';
 import ItemListCliente from '@components/ItemListCliente';
 import '@styles/ItemListCliente.scss';
-const ListadoClientes = ({ clientes, clienteEdit, setClienteEdit, showModal, handleClose, onDelete }) => {
+
+const ListadoClientes = ( props ) => {
+    const {clientes, onDelete} = props;
+    // console.log("Esto es lo que trae clientes: " + JSON.stringify(clientes, null, 2));
 
     return (
         <div>
@@ -10,10 +13,10 @@ const ListadoClientes = ({ clientes, clienteEdit, setClienteEdit, showModal, han
                 key = {cliente.id}
                 idCliente = {cliente.id}
                 cliente = {cliente}
-                clienteEdit = {clienteEdit}
-                setClienteEdit = {setClienteEdit}
-                showModal = {showModal}
-                handleClose={handleClose}
+                // clienteEdit = {clienteEdit}
+                // setClienteEdit = {setClienteEdit}
+                // showModal = {showModal}
+                // handleClose={handleClose}
                 onDelete={onDelete}
                 />
             })}
