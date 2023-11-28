@@ -66,7 +66,7 @@ const NavBar = () => {
       </NavbarContent>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem isActive={activeNavItem === 'Citas'}>
-          <Link color="foreground" to="/Citas" isDisabled={true} onClick={() => handleNavItemClick('Citas')}>
+          <Link color="foreground" to="/" isDisabled={true} onClick={() => handleNavItemClick('Citas')}>
             Citas
           </Link>
         </NavbarItem>
@@ -97,7 +97,7 @@ const NavBar = () => {
           </button>
         </NavbarItem>
         <NavbarItem className="">
-          <Link to={"/"}>
+          <Link to="/">
             <Button color="danger" variant="flat" onPress={onLogout}>
               Cerrar Sesión
             </Button>

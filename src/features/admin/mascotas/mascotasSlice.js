@@ -2,18 +2,19 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const direccionIp = '192.168.0.7'
-const URL_API = `http://${direccionIp}:2812/petcitas/cita`;
+const URL_API = `http://${direccionIp}:2812/petcitas/mascota`;
 
 const initialState = {
-    citas: [],
+    mascotas: [],
     status: 'idle',
     error: null,
 }
 
-// Función para traer todas las citas
-const getCitasAsync = createAsyncThunk('citas/getCitas', async ( citaData ) => {
+//Función para traer todas las mascotas
+const getMascotasAsync = createAsyncThunk('mascotas/mascotasPorVeterinaria', async (mascotaData) => {
+    // console.log("Entró a getMascotasAsync :DD => : " + JSON.stringify(mascotaData, null, 2))
     try {
-        const response = await axios.post(`${URL_API}/obtenerCitas`, citaData, {
+        const response = await axios.post(`${URL_API}/mascotasPorVeterinaria`, mascotaData, {
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Headers":
@@ -23,7 +24,7 @@ const getCitasAsync = createAsyncThunk('citas/getCitas', async ( citaData ) => {
             mode: "no-cors",
         })
         const data = response.data.responses;
-        // console.log("getCitasAsync: => " + JSON.stringify(data, null, 2));
+        // console.log("getMascotasAsync: => " + JSON.stringify(data, null, 2));
         return data;
     } catch (error) {
         console.log(error);
@@ -31,39 +32,39 @@ const getCitasAsync = createAsyncThunk('citas/getCitas', async ( citaData ) => {
     }
 })
 
-const citasSlice = createSlice({
-    name: 'citas',
+const mascotasSlice = createSlice({
+    name: 'mascotas',
     initialState,
     reducers: {
-        getCitas: {
+        getMascotas: {
             reducer(state, action) {
-                state.citas = action.payload;
+                state.mascotas = action.payload;
             },
-            prepare(citas) {
+            prepare(mascotas) {
                 return {
-                    payload: citas
+                    payload: mascotas
                 }
             }
         }
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getCitasAsync.pending, (state) => {
+            .addCase(getMascotasAsync.pending, (state) => {
                 state.status = 'loading';
             })
-            .addCase(getCitasAsync.fulfilled, (state, action) => {
+            .addCase(getMascotasAsync.fulfilled, (state, action) => {
                 state.status = 'success';
-                state.citas = action.payload;
+                state.mascotas = action.payload;
             })
-            .addCase(getCitasAsync.rejected, (state, action) => {
+            .addCase(getMascotasAsync.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
             })
     }
 })
 
-export const { getCitas } = citasSlice.actions;
+export const { getMascotas } = mascotasSlice.actions;
 
-export default citasSlice.reducer;
+export default mascotasSlice.reducer;
 
-export { getCitasAsync }
+export { getMascotasAsync }
