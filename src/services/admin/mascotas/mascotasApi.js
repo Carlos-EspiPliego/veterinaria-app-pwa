@@ -1,12 +1,12 @@
 import axios from 'axios';
 
 const direccionIp = '192.168.0.7'
-const URL_API = `http://${direccionIp}:2812/petcitas/usuario`;
+const URL_API = `http://${direccionIp}:2812/petcitas/mascota`;
 
-export const registrarMascota = async ( userData ) => {
-    console.log("Entró a registrarMascota :DD => : " + JSON.stringify(userData, null, 2))
+export const registrarMascota = async ( mascotaData ) => {
+    console.log("Entró a registrarMascota :DD => : " + JSON.stringify(mascotaData, null, 2))
     try {
-        const response = await axios.post(`${URL_API}/add`, userData, {
+        const response = await axios.post(`${URL_API}/add`, mascotaData, {
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Headers":
@@ -15,7 +15,7 @@ export const registrarMascota = async ( userData ) => {
             },
             mode: "no-cors",
         })
-        const data = response.data;
+        const data = response.data.response;
         return data;
     } catch (error) {
         console.log(error);
