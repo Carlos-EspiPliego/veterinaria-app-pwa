@@ -25,10 +25,10 @@ export const registrarCliente = async ( userData ) => {
 
 
 //Funcion para eliminar un cliente
-export const eliminarCliente = async ( id ) => {
-    console.log("Entró a eliminarCliente :DD => : " + JSON.stringify(id, null, 2))
+export const eliminarCliente = async ( dataUser ) => {
+    console.log("Entró a eliminarCliente :DD => : " + JSON.stringify(dataUser, null, 2))
     try {
-        const response = await axios.delete(`${URL_API}/delete/${id}`, {
+        const response = await axios.post(`${URL_API}/eliminar`, dataUser, {
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Headers":
