@@ -1,18 +1,23 @@
-import {useState, useEffect } from 'react'
+import { Button } from "@nextui-org/react";
+import { useState, useEffect } from 'react'
 import NavBar from '@components/NavBar'
 import FormClientes from "@containers/FormClientes"
 import ListadoClientes from "@containers/ListadoClientes"
 import ModalFormCliente from '@containers/ModalFormCliente'
 
-import { registrarCliente } from '../../services/admin/clientes/clientesApi'
+import { registrarCliente, eliminarCliente, actualizarCliente } from '../../services/admin/clientes/clientesApi'
+import { getClientesAsync } from '@features/admin/clientes/clientesSlice'
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import '@styles/Clientes.scss'
 
 
 const Clientes = () => {
-  const authState = useSelector(state => state.auth.user);
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth.user);
+  const [clientes, setClientes] = useState([]);
+  const clientesRedux = useSelector((state) => state.clientes.users);
   // ----------------- VARIABLES PARA EL MODAL -----------------
   const [show, setShow] = useState(false);
   const showModal = () => {
@@ -50,22 +55,67 @@ const Clientes = () => {
     apellido: "",
     telefono: "",
     rol: "CLIENTE",
-    veterinaria:{
-        id: authState.veterinaria.id
+    veterinaria: {
+      id: auth.veterinaria.id
     }
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const clienteData = {
+        rol: "CLIENTE",
+        veterinaria: {
+          id: auth.veterinaria.id,
+        },
+      };
+
+      try {
+        const clientesResponse = await dispatch(getClientesAsync(clienteData));
+        // console.log("ClientesResponse clientes: " + JSON.stringify(clientesResponse.payload, null, 2));
+        setClientes(clientesResponse.payload);
+      } catch (error) {
+        // Manejar errores si es necesario
+        console.error("Error al obtener clientes:", error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch, auth.veterinaria.id]);
+
+  useEffect(() => {
+    onGetClientes();
+  }, []);
+
+  const onGetClientes = () => {
+    const clienteData = {
+      rol: "CLIENTE",
+      veterinaria: {
+        id: auth.veterinaria.id,
+      },
+    };
+    dispatch(getClientesAsync(clienteData));
+  }
 
   const handleRegisterSubmit = () => {
     console.log("entro a handleRegisterSubmit");
     registrarCliente(client).then((response) => {
       console.log(response);
       formatearFormulario();
+      onGetClientes();
+      //CErrar modal
     });
+    handleClose();
   };
 
-  const handleDelete = () => {
-    
-    
+  const handleDeleteCliente = (usernameCliente) => {
+    const dataUser = {
+      username: usernameCliente,
+    }
+    console.log("Entro a handleDeleteCliente xd : => " + JSON.stringify(dataUser, null, 2));
+    eliminarCliente(dataUser).then((response) => {
+      console.log(response);
+      onGetClientes();
+    });
   };
 
   const formatearFormulario = () => {
@@ -78,8 +128,8 @@ const Clientes = () => {
       apellido: "",
       telefono: "",
       rol: "CLIENTE",
-      veterinaria:{
-          id: authState.veterinaria.id
+      veterinaria: {
+        id: auth.veterinaria.id
       }
     });
   };
@@ -98,35 +148,36 @@ const Clientes = () => {
         </div>
 
         <div className='body__content'>
-        <button className="button__citas button btn__addCliente" onClick={handleShow}>
-            AGREGAR CLIENTE
-          </button>
+          <div className="md:hidden">
+            <Button color="primary" radius='full' auto className='w-[100%] mb-3' onPress={handleShow} >
+              Agregar cliente
+            </Button>
+
+          </div>
           <div className='content__formClientes'>
-            {windowSize<768&&(<ModalFormCliente 
-            client={client} 
-            setCliente={setClient} 
-            show={show} 
-            handleClose={handleClose} 
-            handleSubmit={handleRegisterSubmit}
-            handleInputChange={handleInputChange} 
-            // formCliente={formCliente}
+            {windowSize < 768 && (<ModalFormCliente
+              client={client}
+              show={show}
+              handleClose={handleClose}
+              handleSubmit={handleRegisterSubmit}
+              handleInputChange={handleInputChange}
             />)}
-            <FormClientes 
+            <FormClientes
               client={client}
               handleSubmit={handleRegisterSubmit}
               handleInputChange={handleInputChange}
             />
           </div>
           <div className='content__listClientes'>
-            
-            {/* <ListadoClientes 
-              // clientes={clientes}
-              clienteEdit={client}
-              setClienteEdit={setClient}
-              showModal={showModal}
-              handleClose={handleClose}
-              onDelete={onDelete}
-            /> */}
+
+            <ListadoClientes
+              clientes={clientes}
+              // clienteEdit={client}
+              // setClienteEdit={setClient}
+              // showModal={showModal}
+              // handleClose={handleClose}
+              onDelete={handleDeleteCliente}
+            />
           </div>
         </div>
       </div>

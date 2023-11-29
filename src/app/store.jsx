@@ -5,6 +5,11 @@ import citasSlice from '@features/admin/citas/citasSlice';
 import clientesSlice from '@features/admin/clientes/clientesSlice';
 import mascotasSlice from '@features/admin/mascotas/mascotasSlice';
 
+const initialState = {
+    auth: {
+        user:JSON.parse(localStorage.getItem('currentUser')) || [],
+    }
+}
 export const store = configureStore({
     reducer: {
         theme: themeReducer,
@@ -13,4 +18,5 @@ export const store = configureStore({
         clientes: clientesSlice,
         mascotas: mascotasSlice
     },
+    preloadedState: initialState,
 })
