@@ -1,155 +1,122 @@
 import React, { useEffect, useState } from "react";
-import useClientes from "@hooks/useClientes";
-import useMascota from "@hooks/useMascotas";
 import "@styles/FormPets.scss";
 import "@styles/FormCitas.scss";
 
-const FormPets = ({ pet, setPet,idCliente, setIdCliente, handleSubmit, handleChange,formMascota }) => {
-  const url =
-    "http://srchicharron.com:8080/dancing-queen/clientes/getallclientes";
-  const clientes = useClientes.useGetClientes(url);
-  console.log(pet);
+import { Button, Input, Textarea, Select, SelectItem } from "@nextui-org/react";
 
-  // VARIABLES PARA ALMACENAR LOS DATOS DEL FORMULARIO DE CITAS
-  const handle2ndChange = (event) => {
-    setPet({ ...pet, [event.target.name]: event.target.value });
-    setIdCliente(event.target.selectedIndex);
-    console.log(idCliente);
-  };
+import { IconEye, IconEyeClosed, IconLogin2 } from '@tabler/icons-react';
+
+import { useSelector } from "react-redux";
+
+const FormPets = (props) => {
+  const { handleInputChange, handleRegisterMascota, clientes, mascotaData, onActualizarMascota } = props;
+  // console.log("MascotaData: " + JSON.stringify(mascotaData, null, 2));
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    if (mascotaData.id !== undefined) {
+      setIsEditing(true);
+    }
+  }, [mascotaData.id]);
+
+  const sexos = [
+    { value: 'Macho', label: 'Macho' },
+    { value: 'Hembra', label: 'Hembra' },
+  ]
+  const especies = [
+    { value: 'Perro', label: 'Perro' },
+    { value: 'Gato', label: 'Gato' },
+  ]
 
   return (
-    <>
-      <form className="form__pets" onSubmit={handleSubmit} ref={formMascota}>
-        <div className="container__inputs">
-          <label htmlFor="idCliente" className="label__citas labels">
-            Dueño
-          </label>
-          <select
-            name="idCliente"
-            className="input__citas inputs"
-            onChange={handle2ndChange}
-          >
-            <option value={pet.idCliente}>
-            {pet.nombreCliente + " " + pet.apellidoCliente}
-            </option> 
-            {clientes.map((cliente, indice) => (
-              <option key={indice} value={cliente.id}>
-                {cliente.nombre + " " + cliente.apellidos}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="container__inputs">
-          <label htmlFor="nombreMascota" className=" labels">
-            Nombre
-          </label>
-          <input
-            name="nombreMascota"
-            className=" inputs"
-            type="text"
-            placeholder="Nombre"
-            onChange={handleChange}
-            value={pet.nombreMascota}
-          />
-        </div>
-        <div className="container__inputs">
-          <label htmlFor="especie" className=" labels">
-          Especie
-          </label>
-          <input
-            name="especie"
-            className=" inputs"
-            type="text"
-            placeholder="Especie"
-            onChange={handleChange}
-            value={pet.especie}
-          />
-        </div>
-        <div className="container__inputs">
-          <label htmlFor="raza" className=" labels">
-            Raza
-          </label>
-          <input
-            name="raza"
-            className=" inputs"
-            type="text"
-            placeholder="Raza"
-            onChange={handleChange}
-            value={pet.raza}
-          />
-        </div>
-        <div className="container__inputs">
-          <label htmlFor="fechaNacimiento" className="label__citas labels">
-            Fecha de Nacimiento
-          </label>
-          <input
-            name="fechaNacimiento"
-            className="input__citas inputs"
-            type="datetime-local"
-            onChange={handleChange}
-            value={pet.fechaNacimiento}
-          />
-        </div>
-        <div className="container__inputs">
-          <label htmlFor="edad" className=" labels">
-            Edad
-          </label>
-          <input
-            name="edad"
-            className=" inputs"
-            type="number"
-            placeholder="Edad"
-            onChange={handleChange}
-            value={pet.edad}
-          />
-        </div>
-        <div className="container__inputs">
-          <label htmlFor="peso" className=" labels">
-            Peso
-          </label>
-          <input
-            name="peso"
-            className=" inputs"
-            type="number"
-            placeholder="Peso en kg"
-            onChange={handleChange}
-            value={pet.peso}
-          />
-        </div>
-        <div className="container__inputs">
-          <label htmlFor="sexo" className=" labels">
-            Sexo
-          </label>
-          <input
-            name="sexo"
-            className=" inputs"
-            type="text"
-            placeholder="H o M"
-            onChange={handleChange}
-            value={pet.sexo}
-          />
-        </div>
-        <div className="container__inputs">
-          <label htmlFor="notas" className=" labels">
-            Descripción General
-          </label>
-          <textarea
-            className=" inputs textAreaPets"
-            type="text"
-            placeholder="Descripción general"
-            name="notas"
-            onChange={handleChange}
-            value={pet.notas}
-          />
-        </div>
-        {/* BOTÓN PARA GUARDAR LA CITA */}
-        <div className="container__inputs">
-          <button type="submit" className="button__citasPets button">
-            AGREGAR MASCOTA
-          </button>
-        </div>
-      </form>
-    </>
+    <div className='formularioCliente'>
+      <Input
+        type="text"
+        label="Nombre de la mascota"
+        variant="bordered"
+        value={mascotaData.nombre}
+        placeholder="Nombre de la mascota"
+        onChange={(e) => handleInputChange('nombre', e.target.value)}
+        className="mb-3"
+      />
+      <Input
+        label="Fecha de naciemiento"
+        type="datetime-local"
+        placeholder="Ingrese la fecha y hora estimada"
+        variant="bordered"
+        className="mb-3"
+        value={mascotaData.fechaNacimiento}
+        onChange={(e) => handleInputChange('fechaNacimiento', e.target.value)}
+      />
+      <Input
+        label="Peso"
+        type="number"
+        placeholder="Peso en kg"
+        variant="bordered"
+        className="mb-3"
+        value={mascotaData.peso}
+        onChange={(e) => handleInputChange('peso', e.target.value)}
+      />
+      <Input
+        type="text"
+        label="Raza"
+        variant="bordered"
+        value={mascotaData.raza}
+        placeholder="Raza de la mascota"
+        onChange={(e) => handleInputChange('raza', e.target.value)}
+        className="mb-3"
+      />
+      <Select
+        items={sexos}
+        variant={'bordered'}
+        label="Sexo"
+        className="mb-3"
+        selectedKeys={[mascotaData.sexo]}
+        onChange={(e) => {
+          handleInputChange('sexo', e.target.value)
+        }}
+      >
+          {(sexo) => <SelectItem key={sexo.value} value={sexo.value}>{sexo.value}</SelectItem>}
+      </Select>
+      <Select
+        items={especies}
+        variant={'bordered'}
+        label="Especie"
+        className="mb-3"
+        selectedKeys={[mascotaData.especie]}
+        onChange={(e) => {
+          handleInputChange('especie', e.target.value)
+        }}
+      >
+          {(especie) => <SelectItem key={especie.value} value={especie.value}>{especie.value}</SelectItem>}
+      </Select>
+      <Select
+        items={clientes}
+        variant={'bordered'}
+        label="Cliente"
+        className="mb-3"
+        selectedKeys={[mascotaData.cliente.username]}
+        onChange={(e) => {
+          handleInputChange('username', e.target.value)
+        }}
+      >
+          {(cliente) => <SelectItem key={cliente.username} value={cliente.username}>{cliente.username}</SelectItem>}
+      </Select>
+      
+      <Textarea
+        variant={'bordered'}
+        label="Notas extras"
+        placeholder="Ingrese una breve nota de la mascota"
+        className="mb-3"
+        value={mascotaData.notas}
+        onChange={(e) => handleInputChange('notas', e.target.value)}
+      />
+      <Button color="primary" radius='full' auto className='w-[100%] mb-3' onClick={() => {
+          isEditing ? onActualizarMascota() : handleRegisterMascota()
+        }}>
+        {isEditing ? 'Editar mascota' : 'Registrar mascota'}
+      </Button>
+    </div>
   );
 };
 
