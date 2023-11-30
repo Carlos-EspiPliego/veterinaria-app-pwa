@@ -16,29 +16,15 @@ import {
 import axios from "axios";
 import "react-swipeable-list/dist/styles.css";
 
-const ItemListPet = ({idMascota,mascota,mascotaEdit,setMascotaEdit,showModal,handleClose,onDelete}) => {
-  const [mascotaEditItem, setMascotaEditItem] = useState({
-    idMascota: mascota.id,
-    nombreMascota: mascota.nombre,
-    fechaNacimiento: mascota.fechaNacimiento,
-    peso: mascota.peso,
-    notas: mascota.notas,
-    idCliente: mascota.cliente.id,
-    nombreCliente:mascota.cliente.nombre,
-    apellidoCliente:mascota.cliente.apellidos,
-    sexo: mascota.sexo,
-    especie: mascota.especie,
-    raza: mascota.raza,
-    edad: mascota.edad,
-  });
+const ItemListPet = ( props ) => {
+  const { mascota, onDelete, setMascotaData } = props;
+
   const leadingActions = () => (
     <LeadingActions>
       <SwipeAction
         onClick={() => {
-          setMascotaEdit(mascotaEditItem);
-          console.log(mascotaEdit);
-          console.log(mascotaEditItem);
-          showModal();
+          setMascotaData(mascota);
+          // showModal();
         }}
       >
         Editar
@@ -51,11 +37,7 @@ const ItemListPet = ({idMascota,mascota,mascotaEdit,setMascotaEdit,showModal,han
       <SwipeAction
         destructive={true}
         onClick={() => {
-          console.log("eliminar"+mascotaEditItem.idMascota)
-          console.log(mascotaEdit);
-          console.log(mascotaEditItem);
-          console.log("se establecio la pet to deelete");
-          deletePet();
+          onDelete(mascota.id);
         }}
       >
         Eliminar
@@ -63,40 +45,6 @@ const ItemListPet = ({idMascota,mascota,mascotaEdit,setMascotaEdit,showModal,han
     </TrailingActions>
   );
 
-  const deletePet = () => {
-    
-    console.log("onDelete");
-      console.log("Es una nueva cita -> ");
-      console.log(mascotaEditItem);
-
-      const urlAdd = "http://srchicharron.com:8080/dancing-queen/mascotas/deletemascota";
-      //const urlAdd = "http://localhost:2813/mascotas/deletemascota";
-      const newPet = {
-        id: mascotaEditItem.idMascota,
-      };
-      console.log("Datos de la newPet");
-      console.log(newPet);
-      axios({
-        method: "POST",
-        url: urlAdd,
-        data: JSON.stringify(newPet),
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Headers":
-            "POST, GET, PUT, DELETE, OPTIONS, HEAD, Authorization, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin",
-          "Content-Type": "application/json",
-        },
-        mode: "no-cors",
-      })
-        .then((response) => {
-          console.log(response);
-          onDelete();
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    
-  };
 
   return (
     <SwipeableList>
@@ -108,7 +56,7 @@ const ItemListPet = ({idMascota,mascota,mascotaEdit,setMascotaEdit,showModal,han
           <div className="content__imagePet">
             <img className="back__pug" src={backpug} alt="backpug" />
             {
-              mascota.especie == "PERRO" ? (
+              mascota.especie === "Perro" ? (
               <img className="pug" src={Pug} alt="Mascota" /> ) : (
                 <img className="cat" src={cat} alt="Mascota" /> )
             }
@@ -131,7 +79,7 @@ const ItemListPet = ({idMascota,mascota,mascotaEdit,setMascotaEdit,showModal,han
                 {mascota.notas}
               </p>
             </div>
-            <img className="icon__gender" src={mascota.sexo == "M" ? male : female} />
+            <img className="icon__gender" src={mascota.sexo === "Macho" ? male : female} />
           </div>
         </div>
       </SwipeableListItem>
