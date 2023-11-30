@@ -4,10 +4,6 @@ import "@styles/FormCitas.scss";
 
 import { Button, Input, Textarea, Select, SelectItem } from "@nextui-org/react";
 
-import { IconEye, IconEyeClosed, IconLogin2 } from '@tabler/icons-react';
-
-import { useSelector } from "react-redux";
-
 const FormPets = (props) => {
   const { handleInputChange, handleRegisterMascota, clientes, mascotaData, onActualizarMascota } = props;
   // console.log("MascotaData: " + JSON.stringify(mascotaData, null, 2));
