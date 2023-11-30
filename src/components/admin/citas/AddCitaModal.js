@@ -1,11 +1,25 @@
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Select, SelectItem, Textarea, Chip } from "@nextui-org/react";
+import { set } from "date-fns";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const AddCitaModal = (props) => {
-    const { isOpen, onOpenChange, cita, handleInputChange, handleRegisterCita, clientes, setClienteSeleccionado, mascotas, mascotasFiltradas } = props;
+    const { isOpen, onOpenChange, citaData, handleInputChange, handleRegisterCita, clientes, handleEditarCita, setClienteSeleccionado, mascotas, mascotasFiltradas } = props;
 
-    // console.log("Esto es lo que trae mascotas: " + JSON.stringify(mascotas, null, 2));
+    const [isEditing, setIsEditing] = useState(false);
+
+    useEffect(() => {
+        if (citaData.id !== undefined) {
+            setIsEditing(true);
+            if (setClienteSeleccionado) {
+                setClienteSeleccionado(citaData.cliente.username);
+            }
+        }
+    }, [citaData.id, setClienteSeleccionado]);
+
+    // console.log("CitaData: " + JSON.stringify(citaData, null, 2));
+    // console.log("MascotasFiltradas: " + JSON.stringify(mascotasFiltradas, null, 2));
+    
     return (
         <>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl" backdrop="blur">
@@ -18,6 +32,7 @@ const AddCitaModal = (props) => {
                                     items={clientes}
                                     label="Cliente"
                                     className=""
+                                    selectedKeys={[citaData.cliente.username]}
                                     onChange={(e) => {
                                         handleInputChange('clienteUsername', e.target.value)
                                         setClienteSeleccionado(e.target.value)
@@ -29,12 +44,13 @@ const AddCitaModal = (props) => {
                                     items={mascotasFiltradas}
                                     labelPlacement="outside"
                                     label="Mascota"
+                                    selectedKeys={[citaData.mascota.id]}
                                     classNames={{
                                         trigger: "min-h-unit-12 py-2",
                                     }}
                                     onChange={(e) => handleInputChange('mascotaId', e.target.value)}
                                 >
-                                    {(mascota) => <SelectItem key={mascota.id}>{mascota.nombre}</SelectItem>}
+                                    {(mascota) => <SelectItem key={mascota.id} value={mascota.id}>{mascota.nombre}</SelectItem>}
                                     {/* {mascotas.map((mascota) => (
                                         <SelectItem key={mascota.id} value={mascota.id}>
                                             {mascota.nombre}
@@ -46,14 +62,14 @@ const AddCitaModal = (props) => {
                                     type="datetime-local"
                                     placeholder="Ingrese la fecha y hora de la cita"
                                     variant="bordered"
-                                    // value={formData.fechaHora}
+                                    value={citaData.fecha}
                                     onChange={(e) => handleInputChange('fecha', e.target.value)}
                                 />
                                 <Textarea
                                     label="Motivo de la cita"
                                     placeholder="Ingrese una breve descripción del motivo de visita"
                                     className=""
-                                    // value={formData.motivo}
+                                    value={citaData.descripcion}
                                     onChange={(e) => handleInputChange('descripcion', e.target.value)}
                                 />
                             </ModalBody>
@@ -61,8 +77,10 @@ const AddCitaModal = (props) => {
                                 <Button color="danger" variant="light" onPress={onClose} >
                                     Cancelar
                                 </Button>
-                                <Button color="primary" onPress={handleRegisterCita}>
-                                    Agregar cita
+                                <Button color="primary" onPress={() => {
+                                    isEditing ? handleEditarCita() : handleRegisterCita()
+                                    }}>
+                                    { isEditing ? "Editar" : "Agregar"}
                                 </Button>
                             </ModalFooter>
                         </>
