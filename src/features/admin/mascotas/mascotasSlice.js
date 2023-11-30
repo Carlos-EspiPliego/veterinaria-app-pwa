@@ -142,7 +142,7 @@ const mascotasSlice = createSlice({
                 state.status = 'success';
                 // Eliminar la mascota del state
                 state.mascotas = state.mascotas.filter(mascota => mascota.id !== action.payload.id);
-            })
+            }) 
 
             .addCase(editarMascotaAsync.pending, (state) => {
                 state.status = 'loading';
