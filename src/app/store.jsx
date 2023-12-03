@@ -4,6 +4,7 @@ import themeReducer from '@features/theme/themeSlice';
 import citasSlice from '@features/admin/citas/citasSlice';
 import clientesSlice from '@features/admin/clientes/clientesSlice';
 import mascotasSlice from '@features/admin/mascotas/mascotasSlice';
+import historialSlice from '@features/admin/historiales/historialSlice';
 
 const initialState = {
     auth: {
@@ -16,7 +17,8 @@ export const store = configureStore({
         auth: authReducer,
         citas: citasSlice,
         clientes: clientesSlice,
-        mascotas: mascotasSlice
+        mascotas: mascotasSlice,
+        historiales: historialSlice,
     },
     preloadedState: initialState,
 })

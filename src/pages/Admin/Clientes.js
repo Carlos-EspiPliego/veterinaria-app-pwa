@@ -5,19 +5,19 @@ import FormClientes from "@containers/FormClientes"
 import ListadoClientes from "@containers/ListadoClientes"
 import ModalFormCliente from '@containers/ModalFormCliente'
 
-import { registrarCliente, eliminarCliente, actualizarCliente } from '../../services/admin/clientes/clientesApi'
-import { getClientesAsync } from '@features/admin/clientes/clientesSlice'
+import { getClientesAsync, registrarClienteAsync, eliminarClienteAsync, editarClienteAsync } from '@features/admin/clientes/clientesSlice'
 
 import { useDispatch, useSelector } from 'react-redux';
 
 import '@styles/Clientes.scss'
 
+import SuccessAlert from "@components/alerts/Alerts";
+
 
 const Clientes = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth.user);
-  const [clientes, setClientes] = useState([]);
-  const clientesRedux = useSelector((state) => state.clientes.users);
+  const clientes = useSelector((state) => state.clientes.users);
   // ----------------- VARIABLES PARA EL MODAL -----------------
   const [show, setShow] = useState(false);
   const showModal = () => {
@@ -27,7 +27,10 @@ const Clientes = () => {
       setShow(!show);
     }
   }
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false)
+    formatearFormulario();
+  };
   const handleShow = () => setShow(true);
 
   // FUNCIÓN PARA OBTENER EL TAMAÑO DE LA PANTALLA
@@ -60,33 +63,7 @@ const Clientes = () => {
     }
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const clienteData = {
-        rol: "CLIENTE",
-        veterinaria: {
-          id: auth.veterinaria.id,
-        },
-      };
-
-      try {
-        const clientesResponse = await dispatch(getClientesAsync(clienteData));
-        // console.log("ClientesResponse clientes: " + JSON.stringify(clientesResponse.payload, null, 2));
-        setClientes(clientesResponse.payload);
-      } catch (error) {
-        // Manejar errores si es necesario
-        console.error("Error al obtener clientes:", error);
-      }
-    };
-
-    fetchData();
-  }, [dispatch, auth.veterinaria.id]);
-
-  useEffect(() => {
-    onGetClientes();
-  }, []);
-
-  const onGetClientes = () => {
+  if (clientes.length === 0 ) {
     const clienteData = {
       rol: "CLIENTE",
       veterinaria: {
@@ -96,26 +73,35 @@ const Clientes = () => {
     dispatch(getClientesAsync(clienteData));
   }
 
-  const handleRegisterSubmit = () => {
-    console.log("entro a handleRegisterSubmit");
-    registrarCliente(client).then((response) => {
-      console.log(response);
-      formatearFormulario();
-      onGetClientes();
-      //CErrar modal
-    });
+  useEffect(() => {
+    onGetClientes();
+  }, []);
+
+  const onGetClientes = async () => {
+    const clienteData = {
+      rol: "CLIENTE",
+      veterinaria: {
+        id: auth.veterinaria.id,
+      },
+    };
+    await dispatch(getClientesAsync(clienteData));
+  }
+
+  const handleRegisterSubmit = async () => {
+    // console.log("entro a handleRegisterSubmit");
+    await dispatch(registrarClienteAsync(client));
+    formatearFormulario();
     handleClose();
+    SuccessAlert("Cliente registrado exitosamente");
   };
 
-  const handleDeleteCliente = (usernameCliente) => {
+  const handleDeleteCliente = async (usernameCliente) => {
     const dataUser = {
       username: usernameCliente,
     }
     console.log("Entro a handleDeleteCliente xd : => " + JSON.stringify(dataUser, null, 2));
-    eliminarCliente(dataUser).then((response) => {
-      console.log(response);
-      onGetClientes();
-    });
+    await dispatch(eliminarClienteAsync(dataUser));
+    SuccessAlert("Cliente eliminado exitosamente");
   };
 
   const formatearFormulario = () => {
@@ -172,10 +158,6 @@ const Clientes = () => {
 
             <ListadoClientes
               clientes={clientes}
-              // clienteEdit={client}
-              // setClienteEdit={setClient}
-              // showModal={showModal}
-              // handleClose={handleClose}
               onDelete={handleDeleteCliente}
             />
           </div>

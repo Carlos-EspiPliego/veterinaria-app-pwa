@@ -16,11 +16,14 @@ const APP_SHELL=[
 
 const APP_SHELL_INMUTABLE = [
     'https://fonts.googleapis.com/css?family=Quicksand:300,400&display=swap',
-    'https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.min.js'
+    'https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.min.js',
+    'https://www.gstatic.com/firebasejs/10.6.0/firebase-app-compat.js',
+    'https://www.gstatic.com/firebasejs/10.6.0/firebase-messaging-compat.js'
 ]
 importScripts('https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.min.js')
 importScripts('js/sw-db.js');
 importScripts('js/sw-utils.js');
+importScripts('firebase-messaging-sw.js')
 
 self.addEventListener('install', function(event) {
     const cacheStatic = caches.open(CACHE_STATIC).then(cache => cache.addAll(APP_SHELL))

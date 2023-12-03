@@ -4,7 +4,7 @@ import useMascota from '@hooks/useMascotas'
 import '@styles/ListadoPets.scss'
 
 const ListadoPets = ( props ) => {
-  const { mascotas, onDelete, setMascotaData } = props
+  const { mascotas, onDelete, setMascotaData, showModal } = props
   const mascotasInvertidas = [...mascotas].reverse();
 
   return (
@@ -16,10 +16,7 @@ const ListadoPets = ( props ) => {
           mascota = {mascota}
           onDelete={onDelete}
           setMascotaData={setMascotaData}
-          // mascotaEdit = {mascotaEdit}
-          // setMascotaEdit = {setMascotaEdit}
-          // showModal = {showModal}
-          // handleClose={handleClose}
+          showModal = {showModal}
         />
       })}
     </div>
