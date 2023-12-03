@@ -34,6 +34,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCitasAsync, registrarCitaAsync, deleteCitaAsync, editarCitaAsync } from "@features/admin/citas/citasSlice";
 import { getClientesAsync } from "@features/admin/clientes/clientesSlice";
 import { getMascotasAsync } from "@features/admin/mascotas/mascotasSlice";
+import SuccessAlert from "@components/alerts/Alerts";
 
 const INITIAL_VISIBLE_COLUMNS = ["id", "cliente.nombre", "mascota", "fecha", "descripcion", "actions"];
 
@@ -159,6 +160,7 @@ const Home = () => {
     await dispatch(registrarCitaAsync(citaData));
     formatearFormulario();
     onOpenChange();
+    SuccessAlert("Cita registrada correctamente");
     await onGetCitas();
   }
 
@@ -167,6 +169,7 @@ const Home = () => {
       id: id
     }
     dispatch(deleteCitaAsync(dataCita));
+    SuccessAlert("Cita eliminada correctamente");
   }
 
   const onEditCita = (cita) => {
@@ -190,6 +193,7 @@ const Home = () => {
     await dispatch(editarCitaAsync(citaData));
     formatearFormulario();
     onOpenChange();
+    SuccessAlert("Cita editada correctamente");
   }
 
   const formatearFormulario = async () => {
