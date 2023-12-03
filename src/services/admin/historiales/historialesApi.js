@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 const direccionIp = '192.168.1.154'
-const URL_API = `http://${direccionIp}:2812/petcitas/usuario`;
+const URL_API = `http://${direccionIp}:2812/petcitas/historial`;
 
-export const registrarCliente = async ( userData ) => {
-    console.log("Entró a registrarCliente :DD => : " + JSON.stringify(userData, null, 2))
+export const registrarHistorial = async ( userData ) => {
+   
     try {
         const response = await axios.post(`${URL_API}/add`, userData, {
             headers: {
@@ -23,12 +23,11 @@ export const registrarCliente = async ( userData ) => {
     }
 }
 
-
-//Funcion para eliminar un cliente
-export const eliminarCliente = async ( dataUser ) => {
-    console.log("Entró a eliminarCliente :DD => : " + JSON.stringify(dataUser, null, 2))
+// Función para eliminar cita de un cliente
+export const eliminarHistorial = async ( userData ) => {
+    //console.log("Entró a eliminarHistorial :DD => : " + JSON.stringify(id, null, 2))
     try {
-        const response = await axios.post(`${URL_API}/eliminar`, dataUser, {
+        const response = await axios.post(`${URL_API}/eliminar`, userData, {
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Headers":
@@ -45,11 +44,11 @@ export const eliminarCliente = async ( dataUser ) => {
     }
 }
 
-//Función para actualizar un cliente
-export const actualizarCliente = async ( userData ) => {
-    console.log("Entró a actualizarCliente :DD => : " + JSON.stringify(userData, null, 2))
+// Función para actualizar cita de un cliente
+export const actualizarHistorial = async ( userData ) => {
+    //console.log("Entró a actualizarCita :DD => : " + JSON.stringify(userData, null, 2))
     try {
-        const response = await axios.put(`${URL_API}/update/${userData.id}`, userData, {
+        const response = await axios.post(`${URL_API}/actualizar`, userData, {
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Headers":

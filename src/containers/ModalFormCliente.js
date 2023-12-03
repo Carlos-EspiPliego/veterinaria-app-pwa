@@ -10,7 +10,7 @@ import { IconEye, IconEyeClosed, IconLogin2 } from '@tabler/icons-react';
 const ModalFormCliente = ({ show, handleClose, client, handleSubmit, handleInputChange }) => {
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
-    
+
     return (
         <Modal keyboard={false} className='modalFormCliente' show={show} onHide={handleClose}>
             <Modal.Header className='modalHeader'>

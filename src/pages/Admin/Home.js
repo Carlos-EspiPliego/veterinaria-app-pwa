@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import CircularJSON from 'circular-json';
 import NavBar from "@components/NavBar";
-import ButtonNavBar from "@components/ButtonNavBar";
 import "@styles/Home.scss";
 import { format } from 'date-fns';
 import {
@@ -24,34 +23,25 @@ import {
   useDisclosure
 } from "@nextui-org/react";
 
-import { IconPlus, IconSearch, IconChevronDown, IconEye, IconEdit, IconTrash } from '@tabler/icons-react';
+import { IconPlus, IconSearch, IconChevronDown, IconEdit, IconTrash } from '@tabler/icons-react';
 // import { columns, users, statusOptions } from "./utils/data";
-import { columns, statusOptions } from "./utils/dataCitas";
+import { columns } from "./utils/dataCitas";
 import { capitalize } from "./utils/utils";
 
 import AddCitaModal from "@components/admin/citas/AddCitaModal";
-import { IconCalendarCancel } from "@tabler/icons-react";
 
 import { useSelector, useDispatch } from "react-redux";
-import { getCitasAsync } from "@features/admin/citas/citasSlice";
-import { registrarCita } from "../../services/admin/citas/citasApi";
+import { getCitasAsync, registrarCitaAsync, deleteCitaAsync, editarCitaAsync } from "@features/admin/citas/citasSlice";
 import { getClientesAsync } from "@features/admin/clientes/clientesSlice";
 import { getMascotasAsync } from "@features/admin/mascotas/mascotasSlice";
+import SuccessAlert from "@components/alerts/Alerts";
 
-const statusColorMap = {
-  COMPLETADA: "success",
-  CANCELADA: "danger",
-  PENDIENTE: "warning",
-}
-
-const INITIAL_VISIBLE_COLUMNS = ["id", "cliente.nombre", "mascota", "fecha", "actions"];
-
+const INITIAL_VISIBLE_COLUMNS = ["id", "cliente.nombre", "mascota", "fecha", "descripcion", "actions"];
 
 const Home = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth.user);
-  const citasRedux = useSelector((state) => state.citas.citas);
-  const [citas, setCitas] = useState([]);
+  const citas = useSelector((state) => state.citas.citas);
   const [citaData, setCitaData] = useState({
     fecha: "",
     descripcion: "",
@@ -69,7 +59,6 @@ const Home = () => {
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
-  const [statusFilter, setStatusFilter] = useState("all");
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sortDescriptor, setSortDescriptor] = useState({
     column: "fecha",
@@ -124,18 +113,15 @@ const Home = () => {
     onGetCitas();
   }, []);
 
-  useEffect(() => {
-    setCitas(citasRedux);
-  }, [citasRedux])
-
-  const onGetCitas = () => {
+  const onGetCitas = async () => {
+    // console.log("Entro a OnGetCitas ")
     const citaData = {
       fecha: onCurrentDate(),
       veterinaria: {
         id: auth.veterinaria.id,
       }
     }
-    dispatch(getCitasAsync(citaData));
+    await dispatch(getCitasAsync(citaData));
   }
 
   const onCurrentDate = () => {
@@ -166,22 +152,52 @@ const Home = () => {
     else {
       setCitaData({ ...citaData, [name]: value });
     }
-    // console.log("HandleInputChange: => " + CircularJSON.stringify(citaData, null, 2));
+    console.log("HandleInputChange: => " + CircularJSON.stringify(citaData, null, 2));
   };
 
-  const handleRegisterCita = () => {
-    // console.log("entro a handleRegisterCita: " + CircularJSON.stringify(citaData, null, 2));
-    registrarCita(citaData).then((response) => {
-      // console.log(response);
-      onGetCitas();
-      formatearFormulario();
-      //Cerrar modal
-      onOpenChange();
+  const handleRegisterCita = async () => {
+    // console.log("HandleRegisterCita: => " + CircularJSON.stringify(citaData, null, 2));
+    await dispatch(registrarCitaAsync(citaData));
+    formatearFormulario();
+    onOpenChange();
+    SuccessAlert("Cita registrada correctamente");
+    await onGetCitas();
+  }
+
+  const handleEliminarCita = (id) => {
+    const dataCita = {
+      id: id
+    }
+    dispatch(deleteCitaAsync(dataCita));
+    SuccessAlert("Cita eliminada correctamente");
+  }
+
+  const onEditCita = (cita) => {
+    setCitaData({
+      id: cita.id,
+      fecha: cita.fecha,
+      descripcion: cita.descripcion,
+      veterinaria: {
+        id: cita.veterinaria.id
+      },
+      cliente: {
+        username: cita.cliente.username,
+      },
+      mascota: {
+        id: cita.mascota.id,
+      }
     });
   }
 
-  const formatearFormulario = () => {
-    setCitaData({
+  const handleEditarCita = async () => {
+    await dispatch(editarCitaAsync(citaData));
+    formatearFormulario();
+    onOpenChange();
+    SuccessAlert("Cita editada correctamente");
+  }
+
+  const formatearFormulario = async () => {
+    await setCitaData({
       fecha: "",
       descripcion: "",
       veterinaria: {
@@ -191,7 +207,7 @@ const Home = () => {
         username: "",
       },
       mascota: {
-        id: ""
+        id: "",
       }
     });
   }
@@ -214,14 +230,9 @@ const Home = () => {
         cita.cliente.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
-    if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
-      filteredCitas = filteredCitas.filter((cita) =>
-        Array.from(statusFilter).includes(cita.estatus),
-      );
-    }
 
     return filteredCitas;
-  }, [citas, filterValue, statusFilter]);
+  }, [citas, filterValue, hasSearchFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -263,14 +274,6 @@ const Home = () => {
             {cita.cliente.email}
           </div>
         );
-      case "estatus":
-        return (
-          <div className="w-[100%] text-start">
-            <Chip className="capitalize " color={statusColorMap[cita.estatus]} size="sm" variant="flat">
-              {cellValue}
-            </Chip>
-          </div>
-        );
       case "mascota":
         // Handle the case when cellValue is an array of mascotas
         return (
@@ -284,28 +287,27 @@ const Home = () => {
             {/* Agrega aquí otras propiedades de la mascota que deseas mostrar */}
           </div>
         );
+      case "descipcion":
+        return (
+          <div className="w-[100%] text-start">
+            {cellValue.descripcion}
+          </div>
+        );
       case "actions":
         return (
           <div className="relative flex justify-center align-self-center items-center gap-2">
             <div className="relative flex items-center gap-2">
-              <Tooltip content="Ver más">
-                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                  <IconEye onClick={onOpen} />
-                </span>
-              </Tooltip>
               <Tooltip content="Editar cita">
                 <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                  <IconEdit onClick={onOpen} />
-                </span>
-              </Tooltip>
-              <Tooltip color="warning" content="Cancelar cita">
-                <span className="text-lg text-warning cursor-pointer active:opacity-50">
-                  <IconCalendarCancel />
+                  <IconEdit onClick={() => {
+                    onOpen()
+                    onEditCita(cita)
+                  }} />
                 </span>
               </Tooltip>
               <Tooltip color="danger" content="Eliminar cita">
                 <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                  <IconTrash />
+                  <IconTrash onClick={() => handleEliminarCita(cita.id)} />
                 </span>
               </Tooltip>
             </div>
@@ -314,7 +316,7 @@ const Home = () => {
       default:
         return cellValue;
     }
-  }, []);
+  }, [handleEliminarCita, onEditCita, onOpen]);
 
   const onNextPage = useCallback(() => {
     if (page < pages) {
@@ -364,27 +366,6 @@ const Home = () => {
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button endContent={<IconChevronDown className="text-small" />} variant="flat">
-                  Estatus
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
-              >
-                {statusOptions.map((status) => (
-                  <DropdownItem key={status.uid} className="capitalize">
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button endContent={<IconChevronDown className="text-small" />} variant="flat">
                   Columnas
                 </Button>
               </DropdownTrigger>
@@ -426,12 +407,13 @@ const Home = () => {
     );
   }, [
     filterValue,
-    statusFilter,
     visibleColumns,
     onRowsPerPageChange,
     citas.length,
     onSearchChange,
     hasSearchFilter,
+    onClear,
+    onOpen
   ]);
 
   const bottomContent = useMemo(() => {
@@ -512,8 +494,10 @@ const Home = () => {
         onOpenChange={onOpenChange}
         citaData={citaData} handleInputChange={handleInputChange}
         handleRegisterCita={handleRegisterCita}
+        handleEditarCita={handleEditarCita}
         clientes={clientes} clienteSeleccionado={clienteSeleccionado} setClienteSeleccionado={setClienteSeleccionado}
-        mascotas={mascotas} mascotasFiltradas={mascotasFiltradas} mascotaSeleccionada={mascotaSeleccionada} setMascotaSeleccionada={setMascotaSeleccionada}
+        mascotas={mascotas} mascotasFiltradas={mascotasFiltradas} mascotaSeleccionada={mascotaSeleccionada}
+        setMascotaSeleccionada={setMascotaSeleccionada}
       />
     </div>
   );

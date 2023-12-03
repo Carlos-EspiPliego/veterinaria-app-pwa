@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Pug from "@assets/images/pug.png";
-import cat from "@assets/images/gato.png";
+import dog from "@assets/images/dog.png";
 import backpug from "@assets/images/Elipse.png";
+import cat from "@assets/images/cat.png";
 import male from "@assets/images/male.png";
 import female from "@assets/images/female.png";
 import "@styles/ItemListCita.scss";
 import "@styles/swipeable-list.scss";
+
 import {
   LeadingActions,
   SwipeableList,
@@ -13,39 +14,36 @@ import {
   SwipeAction,
   TrailingActions,
 } from "react-swipeable-list";
-import axios from "axios";
 import "react-swipeable-list/dist/styles.css";
 
-const ItemListPet = ( props ) => {
-  const { mascota, onDelete, setMascotaData, showModal } = props;
+
+const ItemListHistorial = (props) => {
+  const {historial, idHistorial, onDeleteHistorial, setHistorialData} = props;
 
   const leadingActions = () => (
     <LeadingActions>
       <SwipeAction
         onClick={() => {
-          setMascotaData(mascota);
-          showModal();
+          setHistorialData(historial);
         }}
       >
         Editar
       </SwipeAction>
     </LeadingActions>
   );
-
   const trailingActions = () => (
     <TrailingActions>
       <SwipeAction
-        destructive={true}
         onClick={() => {
-          onDelete(mascota.id);
+          console.log("Eliminar");
+          onDeleteHistorial(idHistorial)
         }}
-      >
+        destructive={true}
+        >
         Eliminar
       </SwipeAction>
     </TrailingActions>
   );
-
-
   return (
     <SwipeableList>
       <SwipeableListItem
@@ -55,31 +53,36 @@ const ItemListPet = ( props ) => {
         <div className="container__itemListcita">
           <div className="content__imagePet">
             <img className="back__pug" src={backpug} alt="backpug" />
-            {
-              mascota.especie === "Perro" ? (
-              <img className="pug" src={Pug} alt="Mascota" /> ) : (
-                <img className="cat" src={cat} alt="Mascota" /> )
-            }
+            {historial.mascota.especie == "Perro" ? (
+              <img className="pug" src={dog} alt="Mascota" style={{width:100,height:100}}/>
+            ) : (
+              <img className="cat" src={cat} alt="Mascota" style={{width:100,height:100}}/>
+            )}
+            
           </div>
           <div className="content__information">
             <div className="content__name">
-              <p className="cita__namePet">{mascota.nombre}</p>
+            <p className="cita__namePet">{historial.mascota.nombre}</p>
             </div>
             <div className="content__info">
-              <p>{mascota.raza}</p>
-              <p>{mascota.sexo}</p>
-              <p>{mascota.edad} años</p>
-              <p>{mascota.peso} kg</p>
+              <p>{historial.mascota.raza}</p>
+              <p>{historial.mascota.sexo}</p>
+              <p>{historial.mascota.edad} años</p>
+              <p>{historial.mascota.peso} kg</p>
             </div>
             <div className="content__datetime">
-              <p>{mascota.fechaNacimiento}</p>
+              <p>{historial.fecha}</p>
             </div>
             <div className="content__description">
-              <p className="description">
-                {mascota.notas}
-              </p>
+              <p className="description" style={{fontSize:14}}>Malestar: {historial.malestar}</p>
             </div>
-            <img className="icon__gender" src={mascota.sexo === "Macho" ? male : female} />
+            <div className="content__description">
+              <p className="description" style={{fontSize:14}}>Tratamiento: {historial.tratamiento}</p>
+            </div>
+            <img
+              className="icon__gender"
+              src={historial.mascota.sexo == "M" ? male : female}
+            />
           </div>
         </div>
       </SwipeableListItem>
@@ -87,4 +90,4 @@ const ItemListPet = ( props ) => {
   );
 };
 
-export default ItemListPet;
+export default ItemListHistorial;
