@@ -17,14 +17,14 @@ import axios from "axios";
 import "react-swipeable-list/dist/styles.css";
 
 const ItemListPet = ( props ) => {
-  const { mascota, onDelete, setMascotaData } = props;
+  const { mascota, onDelete, setMascotaData, showModal } = props;
 
   const leadingActions = () => (
     <LeadingActions>
       <SwipeAction
         onClick={() => {
           setMascotaData(mascota);
-          // showModal();
+          showModal();
         }}
       >
         Editar

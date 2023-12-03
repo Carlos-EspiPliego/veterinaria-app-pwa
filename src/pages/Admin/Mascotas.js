@@ -7,6 +7,8 @@ import ModalFormPets from "@containers/ModalFormPets";
 import "@styles/Mascotas.scss";
 
 import { useDispatch, useSelector } from 'react-redux';
+import { Button } from "@nextui-org/react";
+import SuccessAlert from "@components/alerts/Alerts";
 
 import { getMascotasAsync, registrarMascotaAsync, eliminarMascotaAsync, editarMascotaAsync } from "@features/admin/mascotas/mascotasSlice";
 import { getClientesAsync } from "@features/admin/clientes/clientesSlice";
@@ -24,7 +26,10 @@ const Mascotas = () => {
       setShow(!show);
     }
   };
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false)
+    formatearFormulario()
+  };
   const handleShow = () => setShow(true);
   const [windowSize, setWindowSize] = useState(window.innerWidth);
   const [mascotaData, setMascotaData] = useState({
@@ -52,8 +57,8 @@ const Mascotas = () => {
     // Limpiar el event listener al desmontar el componente
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  
-  if (mascotas.length === 0 ) {
+
+  if (mascotas.length === 0) {
     const mascotaData = {
       veterinaria: {
         id: auth.veterinaria.id
@@ -62,7 +67,7 @@ const Mascotas = () => {
     dispatch(getMascotasAsync(mascotaData));
   }
 
-  if (clientes.length === 0 ) {
+  if (clientes.length === 0) {
     const clienteData = {
       rol: "CLIENTE",
       veterinaria: {
@@ -74,7 +79,9 @@ const Mascotas = () => {
 
   const handleRegisterMascota = () => {
     dispatch(registrarMascotaAsync(mascotaData));
+    handleClose();
     formatearFormulario();
+    SuccessAlert("Mascota registrada correctamente");
   };
 
   const onDelete = (id) => {
@@ -82,11 +89,14 @@ const Mascotas = () => {
       id: id
     }
     dispatch(eliminarMascotaAsync(dataMascota));
+    SuccessAlert("Mascota eliminada correctamente");
   };
 
   const onActualizarMascota = () => {
     dispatch(editarMascotaAsync(mascotaData));
+    handleClose();
     formatearFormulario();
+    SuccessAlert("Mascota actualizada correctamente");
   }
 
   const formatearFormulario = () => {
@@ -126,34 +136,30 @@ const Mascotas = () => {
   return (
     <div>
       <NavBar />
-      {/* {windowSize < 768 && (
+      {windowSize < 768 && (
         <ModalFormPets
-          // className="modalFormCitas"
-          // pet={pet}
-          // setPet={setPet}
-          // show={show}
-          // handleClose={handleClose}
-          // handleSubmit={handleSubmit}
-          // handleChange={handleChange}
-          // formatearFormulario={formatearFormulario}
-          // formMascota={formMascota}
-          // idCliente={idCliente}
-          // setIdCliente={setIdCliente}
+          show={show}
+          handleClose={handleClose}
+          clientes={clientes}
+          handleRegisterMascota={handleRegisterMascota}
+          handleInputChange={handleInputChange}
+          mascotaData={mascotaData}
+          onActualizarMascota={onActualizarMascota}
         />
-      )} */}
+      )}
       <div className="container__pets main__container">
         <div className="content__titlePets">
           <h3 className="title__pets">ADMINISTRADOR DE MASCOTAS</h3>
         </div>
 
         <div className="body__content-pets">
-          <button className="button__pets button" onClick={handleShow}>
+          <Button color="primary" radius='full' auto className='w-[100%] mb-3' onPress={handleShow} >
             AGREGAR MASCOTA
-          </button>
+          </Button>
           <div className="content__formPets">
             <FormPets
-              // show={show}
-              // handleClose={handleClose}
+              show={show}
+              handleClose={handleClose}
               clientes={clientes}
               handleRegisterMascota={handleRegisterMascota}
               handleInputChange={handleInputChange}
@@ -166,8 +172,8 @@ const Mascotas = () => {
               mascotas={mascotas}
               onDelete={onDelete}
               setMascotaData={setMascotaData}
-              // showModal={showModal}
-              // handleClose={handleClose}
+              showModal={showModal}
+            // handleClose={handleClose}
             />
           </div>
         </div>
