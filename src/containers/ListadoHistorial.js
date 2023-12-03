@@ -1,23 +1,28 @@
 import React from "react";
 import ItemListHistorial from '@components/ItemListHistorial'
-import '@styles/ListadoCitas.scss'
 
-const ListadoHistorial = ( { citas, setCitas, citaEdit, setCitaEdit, showModal, handleClose } ) => {
-  
+const ListadoHistorial = ( props ) => {
+    const { historiales, onDeleteHistorial, setHistorialData } = props;
+    // Asegúrate de que historiales sea un array
+  const historialesArray = Array.isArray(historiales) ? historiales : [];
 
+  // Invierte el array
+  const historialesinvertidos = [...historialesArray].reverse();
   return (
     <div>
-      {citas.map((cita) => {
-        return <ItemListHistorial
-          key = {cita.id}
-          idCita = {cita.id}
-          cita = {cita}
-          citaEdit = {citaEdit}
-          setCitaEdit = {setCitaEdit}
-          showModal = {showModal}
-          handleClose={handleClose}
-        />
-      })}
+      {historialesinvertidos.length > 0 ? (
+        historialesinvertidos.map((historial) => (
+          <ItemListHistorial
+            key={historial.id}
+            idHistorial={historial.id}
+            historial={historial}
+            onDeleteHistorial={onDeleteHistorial}
+            setHistorialData={setHistorialData}
+          />
+        ))
+      ) : (
+        <h2>No hay historiales registrados</h2>
+      )}
     </div>
   )
 }

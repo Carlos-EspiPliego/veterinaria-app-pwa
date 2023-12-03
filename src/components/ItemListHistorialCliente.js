@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import dog from "@assets/images/dog.png";
 import backpug from "@assets/images/Elipse.png";
 import cat from "@assets/images/cat.png";
@@ -7,49 +7,12 @@ import female from "@assets/images/female.png";
 import "@styles/ItemListCita.scss";
 import "@styles/swipeable-list.scss";
 
-import {
-  LeadingActions,
-  SwipeableList,
-  SwipeableListItem,
-  SwipeAction,
-  TrailingActions,
-} from "react-swipeable-list";
-import "react-swipeable-list/dist/styles.css";
-
-
 const ItemListHistorial = (props) => {
-  const {historial, idHistorial, onDeleteHistorial, setHistorialData} = props;
+  const {historial } = props;
 
-  const leadingActions = () => (
-    <LeadingActions>
-      <SwipeAction
-        onClick={() => {
-          setHistorialData(historial);
-        }}
-      >
-        Editar
-      </SwipeAction>
-    </LeadingActions>
-  );
-  const trailingActions = () => (
-    <TrailingActions>
-      <SwipeAction
-        onClick={() => {
-          console.log("Eliminar");
-          onDeleteHistorial(idHistorial)
-        }}
-        destructive={true}
-        >
-        Eliminar
-      </SwipeAction>
-    </TrailingActions>
-  );
+
   return (
-    <SwipeableList>
-      <SwipeableListItem
-        leadingActions={leadingActions()}
-        trailingActions={trailingActions()}
-      >
+
         <div className="container__itemListcita">
           <div className="content__imagePet">
             <img className="back__pug" src={backpug} alt="backpug" />
@@ -58,11 +21,10 @@ const ItemListHistorial = (props) => {
             ) : (
               <img className="cat" src={cat} alt="Mascota" style={{width:100,height:100}}/>
             )}
-            
           </div>
           <div className="content__information">
             <div className="content__name">
-            <p className="cita__namePet">{historial.mascota.nombre}</p>
+              <p className="cita__namePet">{historial.mascota.nombre}</p>
             </div>
             <div className="content__info">
               <p>{historial.mascota.raza}</p>
@@ -85,8 +47,6 @@ const ItemListHistorial = (props) => {
             />
           </div>
         </div>
-      </SwipeableListItem>
-    </SwipeableList>
   );
 };
 

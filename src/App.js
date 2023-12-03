@@ -6,6 +6,8 @@ import Inicio from '@pages/Inicio';
 import Home from '@pages/Admin/Home';
 import Clientes from '@pages/Admin/Clientes';
 import Mascotas from '@pages/Admin/Mascotas';
+import MiHistorial from './pages/User/MiHistorial'
+import Historial from '@pages/Admin/Historial'
 
 const App = () => {
   const authState = useSelector((state) => state.auth);
@@ -17,6 +19,8 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/Clientes" element={<Clientes />} />
           <Route path="/Mascotas" element={<Mascotas />} />
+          <Route path="/Historial" element={<Historial />} />
+          {/* //Agregar una ruta por si no encuentra alguna otra */}
           <Route path="*" element={<Home />} />
         </Routes>
       );
@@ -24,6 +28,8 @@ const App = () => {
       return (
         <Routes>
           <Route path="/Inicio" element={<Inicio />} />
+          <Route path="/MiHistorial" element={<MiHistorial />} />
+          {/* //Agregar una ruta por si no encuentra alguna otra */}
         </Routes>
       );
     } else {
