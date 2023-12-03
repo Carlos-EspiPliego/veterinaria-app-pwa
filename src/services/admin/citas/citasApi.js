@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const direccionIp = '192.168.0.7'
+const direccionIp = '192.168.1.154'
 const URL_API = `http://${direccionIp}:2812/petcitas/cita`;
 
 export const registrarCita = async ( userData ) => {
