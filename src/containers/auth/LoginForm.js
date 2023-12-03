@@ -1,15 +1,55 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Input, Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
 
 import { IconEye, IconEyeClosed, IconLogin2 } from '@tabler/icons-react';
 
 import { Link } from 'react-router-dom';
 
+import {getToken, onMessage} from 'firebase/messaging'
+import {messaging} from '../../firebase'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+
 const LoginForm = (props) => {
     const { userData, handleInputChange, handleLogin } = props;
     const [isVisible, setIsVisible] = useState(false);
 
     const toggleVisibility = () => setIsVisible(!isVisible);
+
+    const getTokenNotification=async ()=>{
+        const token= await getToken(messaging,{
+          vapidKey:'BMpse16-bZgMgFa0sMlJwRqMlO7_tzCqb68Y-T-NZowC_Gx_9JPfpToluSFO_GazqlEAo1_Xqbqgr8iHKtE29aU'
+        }).catch((err) => console.log('No se puede obtener el token',err))
+        if (token){
+          console.log('Token:',token)
+        }if(!token){
+          console.log('No hay token disponible')
+        }
+      }
+    const notificarme=()=>{
+      if(!window.Notification){
+        console.log('Este navegador no soporta notificaciones');
+        return;
+      }
+      if(Notification.permission==='granted'){
+        getTokenNotification();//Obtener y moestrar el token en la consola
+      }else if(Notification.permission!=='denied'|| Notification.permission==='default'){
+        Notification.requestPermission((permission)=>{
+          console.log(permission);
+          if(permission==='granted'){
+            getTokenNotification();//Obtener y mostrar el token en la consola
+          }
+        })
+      }
+    }
+    notificarme();
+    useEffect(()=>{
+      getTokenNotification()
+      onMessage(messaging,message=>{
+        console.log('onMessage',message)
+        toast(message.notification.title)
+      })
+    },[])
 
     return (
         <Card isBlurred shadow="md" className="border-none bg-background/30 dark:bg-default-100/50 max-w-[410px] w-[100%] mb-40">
@@ -19,6 +59,7 @@ const LoginForm = (props) => {
                     <p className='text-gray-600'>Inicia sesión y descubre un mundo de gestión perfecta</p>
                 </div>
             </CardHeader>
+            <ToastContainer/>
             <CardBody className='p-3'>
                 <Input
                     isClearable
