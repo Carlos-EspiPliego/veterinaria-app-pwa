@@ -205,8 +205,6 @@ export default function Historial() {
             </div>
             </div>
         </div>
-
-        <ButtonNavBar />
     </div>
   )
 }
