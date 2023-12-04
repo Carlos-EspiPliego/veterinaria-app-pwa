@@ -42,7 +42,7 @@ test-apps:
     - apt-get update && apt-get install -y google-chrome-stable
     - npm install
   script:
-    - npm run test:ci
+    - npm run test
 
 deploy:
   stage: deploy
