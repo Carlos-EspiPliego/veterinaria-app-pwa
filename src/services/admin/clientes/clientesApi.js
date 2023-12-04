@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const direccionIp = '192.168.0.13'
-const URL_API = `http://${direccionIp}:2812/petcitas/usuario`;
+const direccionIp = '192.168.56.1'
+const URL_API = `https://petcitas.uw.r.appspot.com/petcitas/usuario`;
 
 export const registrarCliente = async ( userData ) => {
     console.log("Entró a registrarCliente :DD => : " + JSON.stringify(userData, null, 2))
