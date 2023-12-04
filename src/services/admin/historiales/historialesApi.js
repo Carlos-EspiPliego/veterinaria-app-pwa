@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const direccionIp = '192.168.1.154'
-const URL_API = `http://${direccionIp}:2812/petcitas/historial`;
+const URL_API = `https://petcitas.uw.r.appspot.com/petcitas/historial`;
 
 export const registrarHistorial = async ( userData ) => {
    
