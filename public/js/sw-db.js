@@ -21,7 +21,7 @@ function postearMensaje(){
 
             const doc = row.doc;
             console.log('doc de sw-db',doc);
-            const fetchProm = fetch(`http://192.168.1.154:2812/petcitas/cita/add`, {
+            const fetchProm = fetch(`https://petcitas.uw.r.appspot.com/petcitas/cita/add`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
