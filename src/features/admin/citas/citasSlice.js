@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const direccionIp = '192.168.0.15'
+const direccionIp = '192.168.0.13'
 const URL_API = `http://${direccionIp}:2812/petcitas/cita`;
 
 const initialState = {

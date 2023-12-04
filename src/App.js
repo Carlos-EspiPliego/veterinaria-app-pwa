@@ -8,6 +8,7 @@ import Clientes from '@pages/Admin/Clientes';
 import Mascotas from '@pages/Admin/Mascotas';
 import MiHistorial from './pages/User/MiHistorial'
 import Historial from '@pages/Admin/Historial'
+import NotFound from './pages/NotFound';
 
 const App = () => {
   const authState = useSelector((state) => state.auth);
@@ -20,8 +21,7 @@ const App = () => {
           <Route path="/Clientes" element={<Clientes />} />
           <Route path="/Mascotas" element={<Mascotas />} />
           <Route path="/Historial" element={<Historial />} />
-          {/* //Agregar una ruta por si no encuentra alguna otra */}
-          <Route path="*" element={<Home />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       );
     } else if (authState.user.rol === 'CLIENTE') {
@@ -29,16 +29,14 @@ const App = () => {
         <Routes>
           <Route path="/Inicio" element={<Inicio />} />
           <Route path="/MiHistorial" element={<MiHistorial />} />
-          {/* //Agregar una ruta por si no encuentra alguna otra */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       );
     } else {
-      // Assuming 'AuthNavigation' for other roles
       return (
         <Routes>
           <Route path="/" element={<Inicio />} />
-          {/* //Agregar una ruta por si no encuentra alguna otra */}
-          <Route path="*" element={<Inicio />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       );
     }
