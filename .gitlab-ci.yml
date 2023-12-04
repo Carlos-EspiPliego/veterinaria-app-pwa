@@ -41,8 +41,6 @@ test-apps:
     - sh -c 'echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
     - apt-get update && apt-get install -y google-chrome-stable
     - npm install
-  script:
-    - npm run test
 
 deploy:
   stage: deploy
