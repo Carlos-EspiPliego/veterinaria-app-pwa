@@ -1,3 +1,42 @@
-include:
-- template: Auto-DevOps.gitlab-ci.yml
+variables:
+  REPORT_FILENAME: gl-sast-report.json
+  MAX_IMAGE_SIZE_MB: 54
+  MAX_SCAN_DURATION_SECONDS: 30
+  SAST_EXCLUDED_ANALYZERS: "eslint, nodejs-scan, semgrep"
 
+stages:
+  - sast
+  - build
+  - test
+  - deploy
+
+include:
+  - template: Auto-DevOps.gitlab-ci.yml
+  - project: gitlab.com/VeterinariaApp-PWA/veterinariaapp-pwa
+    file: .gitlab-ci-template.yml
+
+eslint:
+  stage: sast
+  script:
+    - npm install eslint -g
+    - eslint .
+  only:
+    - $CI_DEFAULT_BRANCH
+
+build:
+  stage: build
+  only:
+    - $CI_DEFAULT_BRANCH
+
+test:
+  stage: test
+  script:
+    - npm ci
+    - npm test
+  only:
+    - $CI_DEFAULT_BRANCH
+
+deploy:
+  stage: deploy
+  only:
+    - $CI_DEFAULT_BRANCH
