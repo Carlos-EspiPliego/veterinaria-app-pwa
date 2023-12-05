@@ -49,4 +49,4 @@ Este proyecto es una *aplicación web* que permite a las veterinarias y hospital
 
 11. Para editar una cita debe deslizar hacia la derecha y los datos se mostraran en el formulario, y al escribir la nueva informacion dar clic en el boton **Guardar**.
 
-12. test
+12. test desactivar job
