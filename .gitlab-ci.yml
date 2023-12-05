@@ -19,21 +19,27 @@ eslint:
   script:
     - npm install eslint -g
     - eslint .
-  only:
-    - $CI_DEFAULT_BRANCH
+  rules:
+    - exists:
+        - "package.json"
 
 build:
   stage: build
-  only:
-    - $CI_DEFAULT_BRANCH
+  script:
+    - npm ci
+    - npm run build
+  rules:
+    - exists:
+        - "package.json"
 
 test:
   stage: test
   script:
     - npm ci
     - npm test
-  only:
-    - $CI_DEFAULT_BRANCH
+  rules:
+    - exists:
+        - "package.json"
 
 deploy:
   stage: deploy
@@ -41,5 +47,6 @@ deploy:
     - npm install
     - npm run build
     - cp -a dist/. public/
-  only:
-    - $CI_DEFAULT_BRANCH
+  rules:
+    - exists:
+        - "package.json"
