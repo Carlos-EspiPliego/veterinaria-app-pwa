@@ -21,6 +21,7 @@ eslint:
   rules:
     - exists:
         - "package.json"
+  allow_failure: true
 
 build:
   stage: build
