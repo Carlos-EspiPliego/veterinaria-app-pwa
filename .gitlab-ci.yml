@@ -1,3 +1,16 @@
 include:
 - template: Auto-DevOps.gitlab-ci.yml
 
+test:
+  stage: test
+  script:
+    - echo "Ejecutando tests...D:"
+  rules:
+    - when: never
+
+review:
+  stage: review
+  script:
+    - echo "Ejecutando review...D:"
+  rules:
+    - when: never
