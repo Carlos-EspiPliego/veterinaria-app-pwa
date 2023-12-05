@@ -12,7 +12,6 @@ stages:
 
 include:
   - template: Auto-DevOps.gitlab-ci.yml
-  - project: https://gitlab.com/2022378002/veterinariaapp-pwa
     file: .gitlab-ci-template.yml
 
 eslint:
