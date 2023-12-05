@@ -1,3 +1,48 @@
-include:
-- template: Auto-DevOps.gitlab-ci.yml
+variables:
+  REPORT_FILENAME: gl-sast-report.json
+  MAX_IMAGE_SIZE_MB: 54
+  MAX_SCAN_DURATION_SECONDS: 30
+  SAST_EXCLUDED_ANALYZERS: "eslint, nodejs-scan, semgrep"
 
+stages:
+  - sast
+  - build
+  - test
+  - deploy
+
+eslint:
+  stage: sast
+  script:
+    - npm install eslint -g
+    - eslint .
+  rules:
+    - exists:
+        - "package.json"
+
+build:
+  stage: build
+  script:
+    - npm ci
+    - npm run build
+  rules:
+    - exists:
+        - "package.json"
+
+test:
+  stage: test
+  script:
+    - npm ci
+    - npm test
+  rules:
+    - exists:
+        - "package.json"
+
+deploy:
+  stage: deploy
+  script:
+    - npm install
+    - npm run build
+    - cp -a dist/. public/
+  rules:
+    - exists:
+        - "package.json"
